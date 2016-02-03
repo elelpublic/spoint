@@ -5,17 +5,17 @@ package com.infodesire.spoint.model;import groovy.transform.ToString;
 
 
 /**
- * Sharepoint List object
+ * Sharepoint ListItem object
  * 
  */
 @ToString(includeNames=true)
-public class SPList {
+public class SPListItem {
   
   
-  String id
+  String guid
   String uri
   String title
-  String description
+  String type
   
 
 }
