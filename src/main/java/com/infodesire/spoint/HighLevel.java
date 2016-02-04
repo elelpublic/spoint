@@ -6,6 +6,7 @@ package com.infodesire.spoint;
 import static com.infodesire.spoint.SPCode.HTTP_ERROR;
 
 import com.infodesire.spoint.model.Json;
+import com.infodesire.spoint.model.SPFolder;
 import com.infodesire.spoint.model.SPList;
 import com.infodesire.spoint.model.SPListItem;
 import com.infodesire.spoint.utils.FilePath;
@@ -139,6 +140,40 @@ public class HighLevel {
       }
       
       return Json.parseListItems( response.getContent() );
+      
+    }
+    catch( ClientProtocolException ex ) {
+      throw new SPException( HTTP_ERROR, null, ex, "Client protocol error" );
+    }
+    catch( IOException ex ) {
+      throw new SPException( HTTP_ERROR, null, ex, "Cannot read response text" );
+    }
+
+  }
+
+
+  /**
+   * Load all lists
+   * 
+   * @param connection Sharepoint server connection
+   * @param pathName Parent path of lists
+   * @return Lists found
+   * @throws SPException on system error or configuration problem
+   * 
+   */
+  public static List<SPFolder> getFolders( Connection connection, String pathName ) throws SPException {
+
+    FilePath path = FilePath.parse( pathName );
+    path = new FilePath( path, "folders" );
+    
+    try {
+      
+      Response response = LowLevel.performGet( connection, path.toString() );
+      if( !response.isOk() ) {
+        throw new SPException( HTTP_ERROR, response, null, null );
+      }
+      
+      return Json.parseFolders( response.getContent() );
       
     }
     catch( ClientProtocolException ex ) {

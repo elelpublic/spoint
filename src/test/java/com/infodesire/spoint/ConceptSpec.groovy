@@ -3,6 +3,7 @@
 
 package com.infodesire.spoint;
 
+import com.infodesire.spoint.model.SPFolder
 import com.infodesire.spoint.model.SPList
 import com.infodesire.spoint.model.SPListItem
 
@@ -55,6 +56,7 @@ public class ConceptSpec extends Specification {
       String pretty
       SPList list
       List<SPListItem> items
+      List<SPFolder> folders
     
 //      response = LowLevel.performGet( connection, "/_api/web/lists" );
 //      pretty = JsonOutput.prettyPrint( response.content );
@@ -76,17 +78,25 @@ public class ConceptSpec extends Specification {
       
       //println list      
       
-      response = LowLevel.performGet( connection, "/_api/web/lists/getbytitle('Dokumente')/items",  );
-      pretty = JsonOutput.prettyPrint( response.content );
+//      response = LowLevel.performGet( connection, "/_api/web/lists/getbytitle('Dokumente')/items",  );
+//      pretty = JsonOutput.prettyPrint( response.content );
 //      println pretty
       
-      response = LowLevel.performGet( connection, "/_api/web/Lists(guid'82f1f8c3-2445-45db-8ad0-0ddd5fa76edf')/Items(1)",  );
-      pretty = JsonOutput.prettyPrint( response.content );
+//      response = LowLevel.performGet( connection, "/_api/web/Lists(guid'82f1f8c3-2445-45db-8ad0-0ddd5fa76edf')/Items(1)",  );
+//      pretty = JsonOutput.prettyPrint( response.content );
 //      println pretty
       
-      items = HighLevel.getListItemsByTitle( connection, "/_api/web", "Dokumente" );
-      items.each {
-        println it
+//      items = HighLevel.getListItemsByTitle( connection, "/_api/web", "Dokumente" );
+//      items.each {
+//        println it
+//      }
+      
+//      response = LowLevel.performGet( connection, "/_api/web/folders",  );
+//      pretty = JsonOutput.prettyPrint( response.content );
+//      println pretty
+      
+      HighLevel.getFolders( connection, "/_api/web" ).each {
+        println it.relativeUri
       }
       
     then:

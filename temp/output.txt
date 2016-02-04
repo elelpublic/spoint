@@ -1,3 +1,484 @@
+// --------------------------------------------------------------------------------------------------
+// Folders
+
+
+{
+    "d": {
+        "results": [
+            {
+                "__metadata": {
+                    "id": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_cts')",
+                    "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_cts')",
+                    "type": "SP.Folder"
+                },
+                "Files": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_cts')/Files"
+                    }
+                },
+                "ListItemAllFields": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_cts')/ListItemAllFields"
+                    }
+                },
+                "ParentFolder": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_cts')/ParentFolder"
+                    }
+                },
+                "Properties": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_cts')/Properties"
+                    }
+                },
+                "Folders": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_cts')/Folders"
+                    }
+                },
+                "ItemCount": 0,
+                "Name": "_cts",
+                "ServerRelativeUrl": "/_cts",
+                "WelcomePage": ""
+            },
+            {
+                "__metadata": {
+                    "id": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_vti_pvt')",
+                    "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_vti_pvt')",
+                    "type": "SP.Folder"
+                },
+                "Files": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_vti_pvt')/Files"
+                    }
+                },
+                "ListItemAllFields": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_vti_pvt')/ListItemAllFields"
+                    }
+                },
+                "ParentFolder": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_vti_pvt')/ParentFolder"
+                    }
+                },
+                "Properties": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_vti_pvt')/Properties"
+                    }
+                },
+                "Folders": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_vti_pvt')/Folders"
+                    }
+                },
+                "ItemCount": 0,
+                "Name": "_vti_pvt",
+                "ServerRelativeUrl": "/_vti_pvt",
+                "WelcomePage": ""
+            },
+            {
+                "__metadata": {
+                    "id": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_catalogs')",
+                    "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_catalogs')",
+                    "type": "SP.Folder"
+                },
+                "Files": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_catalogs')/Files"
+                    }
+                },
+                "ListItemAllFields": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_catalogs')/ListItemAllFields"
+                    }
+                },
+                "ParentFolder": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_catalogs')/ParentFolder"
+                    }
+                },
+                "Properties": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_catalogs')/Properties"
+                    }
+                },
+                "Folders": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_catalogs')/Folders"
+                    }
+                },
+                "ItemCount": 0,
+                "Name": "_catalogs",
+                "ServerRelativeUrl": "/_catalogs",
+                "WelcomePage": ""
+            },
+            {
+                "__metadata": {
+                    "id": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_private')",
+                    "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_private')",
+                    "type": "SP.Folder"
+                },
+                "Files": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_private')/Files"
+                    }
+                },
+                "ListItemAllFields": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_private')/ListItemAllFields"
+                    }
+                },
+                "ParentFolder": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_private')/ParentFolder"
+                    }
+                },
+                "Properties": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_private')/Properties"
+                    }
+                },
+                "Folders": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/_private')/Folders"
+                    }
+                },
+                "ItemCount": 0,
+                "Name": "_private",
+                "ServerRelativeUrl": "/_private",
+                "WelcomePage": ""
+            },
+            {
+                "__metadata": {
+                    "id": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Lists')",
+                    "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Lists')",
+                    "type": "SP.Folder"
+                },
+                "Files": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Lists')/Files"
+                    }
+                },
+                "ListItemAllFields": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Lists')/ListItemAllFields"
+                    }
+                },
+                "ParentFolder": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Lists')/ParentFolder"
+                    }
+                },
+                "Properties": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Lists')/Properties"
+                    }
+                },
+                "Folders": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Lists')/Folders"
+                    }
+                },
+                "ItemCount": 0,
+                "Name": "Lists",
+                "ServerRelativeUrl": "/Lists",
+                "WelcomePage": ""
+            },
+            {
+                "__metadata": {
+                    "id": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/images')",
+                    "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/images')",
+                    "type": "SP.Folder"
+                },
+                "Files": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/images')/Files"
+                    }
+                },
+                "ListItemAllFields": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/images')/ListItemAllFields"
+                    }
+                },
+                "ParentFolder": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/images')/ParentFolder"
+                    }
+                },
+                "Properties": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/images')/Properties"
+                    }
+                },
+                "Folders": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/images')/Folders"
+                    }
+                },
+                "ItemCount": 0,
+                "Name": "images",
+                "ServerRelativeUrl": "/images",
+                "WelcomePage": ""
+            },
+            {
+                "__metadata": {
+                    "id": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Freigegebene Dokumente')",
+                    "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Freigegebene%20Dokumente')",
+                    "type": "SP.Folder"
+                },
+                "Files": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Freigegebene%20Dokumente')/Files"
+                    }
+                },
+                "ListItemAllFields": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Freigegebene%20Dokumente')/ListItemAllFields"
+                    }
+                },
+                "ParentFolder": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Freigegebene%20Dokumente')/ParentFolder"
+                    }
+                },
+                "Properties": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Freigegebene%20Dokumente')/Properties"
+                    }
+                },
+                "Folders": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Freigegebene%20Dokumente')/Folders"
+                    }
+                },
+                "ItemCount": 1,
+                "Name": "Freigegebene Dokumente",
+                "ServerRelativeUrl": "/Freigegebene Dokumente",
+                "WelcomePage": ""
+            },
+            {
+                "__metadata": {
+                    "id": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Style Library')",
+                    "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Style%20Library')",
+                    "type": "SP.Folder"
+                },
+                "Files": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Style%20Library')/Files"
+                    }
+                },
+                "ListItemAllFields": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Style%20Library')/ListItemAllFields"
+                    }
+                },
+                "ParentFolder": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Style%20Library')/ParentFolder"
+                    }
+                },
+                "Properties": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Style%20Library')/Properties"
+                    }
+                },
+                "Folders": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/Style%20Library')/Folders"
+                    }
+                },
+                "ItemCount": 1,
+                "Name": "Style Library",
+                "ServerRelativeUrl": "/Style Library",
+                "WelcomePage": ""
+            },
+            {
+                "__metadata": {
+                    "id": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/m')",
+                    "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/m')",
+                    "type": "SP.Folder"
+                },
+                "Files": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/m')/Files"
+                    }
+                },
+                "ListItemAllFields": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/m')/ListItemAllFields"
+                    }
+                },
+                "ParentFolder": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/m')/ParentFolder"
+                    }
+                },
+                "Properties": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/m')/Properties"
+                    }
+                },
+                "Folders": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/m')/Folders"
+                    }
+                },
+                "ItemCount": 0,
+                "Name": "m",
+                "ServerRelativeUrl": "/m",
+                "WelcomePage": ""
+            },
+            {
+                "__metadata": {
+                    "id": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/FormServerTemplates')",
+                    "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/FormServerTemplates')",
+                    "type": "SP.Folder"
+                },
+                "Files": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/FormServerTemplates')/Files"
+                    }
+                },
+                "ListItemAllFields": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/FormServerTemplates')/ListItemAllFields"
+                    }
+                },
+                "ParentFolder": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/FormServerTemplates')/ParentFolder"
+                    }
+                },
+                "Properties": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/FormServerTemplates')/Properties"
+                    }
+                },
+                "Folders": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/FormServerTemplates')/Folders"
+                    }
+                },
+                "ItemCount": 0,
+                "Name": "FormServerTemplates",
+                "ServerRelativeUrl": "/FormServerTemplates",
+                "WelcomePage": ""
+            },
+            {
+                "__metadata": {
+                    "id": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/ProjectPolicyItemList')",
+                    "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/ProjectPolicyItemList')",
+                    "type": "SP.Folder"
+                },
+                "Files": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/ProjectPolicyItemList')/Files"
+                    }
+                },
+                "ListItemAllFields": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/ProjectPolicyItemList')/ListItemAllFields"
+                    }
+                },
+                "ParentFolder": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/ProjectPolicyItemList')/ParentFolder"
+                    }
+                },
+                "Properties": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/ProjectPolicyItemList')/Properties"
+                    }
+                },
+                "Folders": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/ProjectPolicyItemList')/Folders"
+                    }
+                },
+                "ItemCount": 0,
+                "Name": "ProjectPolicyItemList",
+                "ServerRelativeUrl": "/ProjectPolicyItemList",
+                "WelcomePage": ""
+            },
+            {
+                "__metadata": {
+                    "id": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/IWConvertedForms')",
+                    "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/IWConvertedForms')",
+                    "type": "SP.Folder"
+                },
+                "Files": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/IWConvertedForms')/Files"
+                    }
+                },
+                "ListItemAllFields": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/IWConvertedForms')/ListItemAllFields"
+                    }
+                },
+                "ParentFolder": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/IWConvertedForms')/ParentFolder"
+                    }
+                },
+                "Properties": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/IWConvertedForms')/Properties"
+                    }
+                },
+                "Folders": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/IWConvertedForms')/Folders"
+                    }
+                },
+                "ItemCount": 0,
+                "Name": "IWConvertedForms",
+                "ServerRelativeUrl": "/IWConvertedForms",
+                "WelcomePage": ""
+            },
+            {
+                "__metadata": {
+                    "id": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/SiteAssets')",
+                    "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/SiteAssets')",
+                    "type": "SP.Folder"
+                },
+                "Files": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/SiteAssets')/Files"
+                    }
+                },
+                "ListItemAllFields": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/SiteAssets')/ListItemAllFields"
+                    }
+                },
+                "ParentFolder": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/SiteAssets')/ParentFolder"
+                    }
+                },
+                "Properties": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/SiteAssets')/Properties"
+                    }
+                },
+                "Folders": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFolderByServerRelativeUrl('/SiteAssets')/Folders"
+                    }
+                },
+                "ItemCount": 1,
+                "Name": "SiteAssets",
+                "ServerRelativeUrl": "/SiteAssets",
+                "WelcomePage": ""
+            }
+        ]
+    }
+}
+
+
+// --------------------------------------------------------------------------------------------------
 // ListItem
 
 {

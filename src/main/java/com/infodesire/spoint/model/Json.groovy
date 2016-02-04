@@ -58,6 +58,21 @@ public class Json {
   }
   
   
+  public static List<SPFolder> parseFolders( String content ) throws SPException {
+    
+    try {
+      def json = new JsonSlurper().parseText( content );
+      json['d']['results'].collect { list ->
+        return createFolder( list );
+      }
+    }
+    catch( JsonException ex ) {
+      throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
+    }
+    
+  }
+  
+  
   private static SPList createList( Object list ) {
     def metadata = list['__metadata'];
     return new SPList(
@@ -70,12 +85,6 @@ public class Json {
   
 
   private static SPListItem createListItem( Object listItem ) {
-
-//    String guid
-//    String uri
-//    String title
-//    String type
-  
     def metadata = listItem['__metadata'];
     return new SPListItem(
       guid: listItem['GUID'],
@@ -83,9 +92,18 @@ public class Json {
       title: listItem['Title'],
       type: metadata['type']
     );
-
   }
   
+  
+  private static SPFolder createFolder( Object folder ) {
+    def metadata = folder['__metadata'];
+    return new SPFolder(
+      name: folder['Name'],
+      relativeUri: folder['ServerRelativeUrl'],
+      itemCount: folder['ItemCount']
+    );
+  }
+
   
 }
 
