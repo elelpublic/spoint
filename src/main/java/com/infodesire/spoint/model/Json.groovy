@@ -3,15 +3,15 @@
 
 package com.infodesire.spoint.model;
 
-import com.infodesire.spoint.SPCode
-import com.infodesire.spoint.SPException
+import com.infodesire.spoint.base.SPCode;
+import com.infodesire.spoint.base.SPException;
 
 import groovy.json.JsonException
 import groovy.json.JsonSlurper
 
 
 /**
- * Parse and format model object in JSON
+ * Parse and format model objects in JSON
  *
  */
 public class Json {
@@ -62,9 +62,23 @@ public class Json {
     
     try {
       def json = new JsonSlurper().parseText( content );
-      json['d']['results'].collect { list ->
-        return createFolder( list );
+      json['d']['results'].collect { folder ->
+        return createFolder( folder );
       }
+    }
+    catch( JsonException ex ) {
+      throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
+    }
+    
+  }
+  
+  
+  public static SPFolder parseFolder( String content ) throws SPException {
+    
+    try {
+      def json = new JsonSlurper().parseText( content );
+      def folder = json['d'];
+      return createFolder( folder );
     }
     catch( JsonException ex ) {
       throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 

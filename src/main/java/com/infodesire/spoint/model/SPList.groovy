@@ -8,7 +8,7 @@ package com.infodesire.spoint.model;import groovy.transform.ToString;
  * Sharepoint List object
  * 
  */
-@ToString(includeNames=true)
+@ToString(includeNames=true,includePackage=false)
 public class SPList {
   
   

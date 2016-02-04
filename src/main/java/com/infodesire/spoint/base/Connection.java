@@ -1,7 +1,7 @@
 // (C) 1998-2016 Information Desire Software GmbH
 // www.infodesire.com
 
-package com.infodesire.spoint;
+package com.infodesire.spoint.base;
 
 import java.net.MalformedURLException;
 import java.net.URL;
