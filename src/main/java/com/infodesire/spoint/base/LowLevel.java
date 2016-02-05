@@ -130,13 +130,15 @@ public class LowLevel {
    * 
    * @param connection Connection
    * @param path Request uri
+   * @param xHttpMethod Header value for X-HTTP-Method
    * @return Response from server
    * @throws ClientProtocolException Http problem
    * @throws IOException Http communication problem
    * 
    */
   public static Response performPost( Connection connection, String path,
-    String content ) throws ClientProtocolException, IOException {
+    String content, String formDigestValue, String xHttpMethod )
+    throws ClientProtocolException, IOException {
     
     HttpClient httpClient = connection.getHttpClient();
     HttpHost httpHost = connection.getHttpHost();
@@ -145,6 +147,13 @@ public class LowLevel {
     HttpPost requestObject = new HttpPost( path );
     requestObject.setEntity( new ByteArrayEntity( content.toString().getBytes(
       "UTF8" ) ) );
+    if( xHttpMethod != null ) {
+      requestObject.addHeader( "X-HTTP-Method", xHttpMethod );
+    }
+    if( formDigestValue != null ) {
+      requestObject.addHeader( "X-RequestDigest", formDigestValue );
+    }
+    requestObject.addHeader( "IF-MATCH", "*" );
     
     CloseableHttpResponse httpResponse = null;
     Response response = new Response();

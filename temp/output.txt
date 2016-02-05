@@ -1,4 +1,35 @@
 // --------------------------------------------------------------------------------------------------
+// ContextInfo
+
+
+{
+    "d": {
+        "GetContextWebInformation": {
+            "__metadata": {
+                "type": "SP.ContextWebInformation"
+            },
+            "FormDigestTimeoutSeconds": 1800,
+            "FormDigestValue": "0x9950FF54AFE82C65A1E0A36C7CFE2ABC9F4F0901F09AF510BB07B06B82305BF58F9B6EB4C0F5C50CC91303121548CB501F9E3721116F323625401C64CBBCD6EB,04 Feb 2016 14:21:34 -0000",
+            "LibraryVersion": "15.0.4771.1000",
+            "SiteFullUrl": "https://sp10937.hostedoffice.ag",
+            "SupportedSchemaVersions": {
+                "__metadata": {
+                    "type": "Collection(Edm.String)"
+                },
+                "results": [
+                    "14.0.0.0",
+                    "15.0.0.0"
+                ]
+            },
+            "WebFullUrl": "https://sp10937.hostedoffice.ag"
+        }
+    }
+}
+
+
+
+
+// --------------------------------------------------------------------------------------------------
 // Folders
 
 

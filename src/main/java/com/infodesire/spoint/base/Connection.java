@@ -3,6 +3,8 @@
 
 package com.infodesire.spoint.base;
 
+import com.infodesire.spoint.model.SPContextInfo;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -28,6 +30,7 @@ public class Connection {
   private HttpClientContext context;
   private HttpClient httpClient;
   private HttpHost httpHost;
+  private SPContextInfo contextInfo;
 
 
   public Connection( Config config ) throws MalformedURLException {
@@ -137,6 +140,23 @@ public class Connection {
    */
   public void setHttpHost( HttpHost httpHost ) {
     this.httpHost = httpHost;
+  }
+
+
+  /**
+   * @return Sharepoint site context (contains digest needed for writing operations)
+   * 
+   */
+  public SPContextInfo getContextInfo() {
+    return contextInfo;
+  }
+
+
+  /**
+   * @param contextInfo Sharepoint site context (contains digest needed for writing operations)
+   */
+  public void setContextInfo( SPContextInfo contextInfo ) {
+    this.contextInfo = contextInfo;
   }
 
 

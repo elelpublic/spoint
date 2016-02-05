@@ -7,11 +7,13 @@ import com.infodesire.spoint.base.Config
 import com.infodesire.spoint.base.Connection
 import com.infodesire.spoint.base.LowLevel
 import com.infodesire.spoint.base.Response
+import com.infodesire.spoint.model.SPContextInfo;
 import com.infodesire.spoint.model.SPFolder
 import com.infodesire.spoint.model.SPList
 import com.infodesire.spoint.model.SPListItem
 import com.infodesire.spoint.operations.FolderOperations
 import com.infodesire.spoint.operations.ListOperations
+import com.infodesire.spoint.operations.SiteOperations;
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
@@ -64,9 +66,15 @@ public class ConceptSpec extends Specification {
       List<SPListItem> items
       List<SPFolder> folders
       String content
+      SPContextInfo contextInfo
+      
+      contextInfo = SiteOperations.getContextInfo( connection );
+      println contextInfo
     
 //      response = LowLevel.performGet( connection, "/_api/web/lists" );
 //      pretty = JsonOutput.prettyPrint( response.content );
+//      println pretty
+//      
 //      
 //      ListOperations.getLists( connection, "/_api/web" ).each {
 //        println it.title
@@ -102,16 +110,16 @@ public class ConceptSpec extends Specification {
 //      pretty = JsonOutput.prettyPrint( response.content );
 //      println pretty
 //      
-      println "## root folders"
-      FolderOperations.getRootFolders( connection, "/_api/web" ).each {
-        println it.relativeUri
-      }
-
-      println "## Freigegebene Dokumente"      
-      FolderOperations.getFolders( connection, "/_api/web", "Freigegebene Dokumente" ).each {
-        println it.relativeUri
-      }
-      
+//      println "## root folders"
+//      FolderOperations.getRootFolders( connection, "/_api/web" ).each {
+//        println it.relativeUri
+//      }
+//
+//      println "## Freigegebene Dokumente"      
+//      FolderOperations.getFolders( connection, "/_api/web", "Freigegebene Dokumente" ).each {
+//        println it.relativeUri
+//      }
+//      
 //      println "## /Lists"      
 //      FolderOperations.getFolders( connection, "/_api/web", "Lists" ).each {
 //        println it.relativeUri
@@ -122,23 +130,42 @@ public class ConceptSpec extends Specification {
 //      
 //      println "## Create Folder"      
 //      content = "body: { '__metadata': { 'type': 'SP.Folder' }, 'ServerRelativeUrl': '/Freigegebene%20Dokumente/test2'}"
-//      println LowLevel.performPost( connection, "/_api/web/folders", content )
-      
-      println "## Create Folder 2"      
-      content = ""
-      println LowLevel.performPost( connection, "/_api/web/folders/add('/Freigegebene%20Dokumente/test3')", content )
+//      println LowLevel.performPost( connection, "/_api/web/folders", content, contextInfo.formDigestValue )
+//      
+//      println "## Create Folder 2"      
+//      content = ""
+//      println LowLevel.performPost( connection, "/_api/web/folders/add('/Freigegebene%20Dokumente/test3')", content, contextInfo.formDigestValue )
+//      
+//
+            
+      println "## Create Folder"      
+      println FolderOperations.createFolder( connection, "/_api/web", "Freigegebene Dokumente/test4" )
       
       println "## /Freigegebene Dokumente"      
       FolderOperations.getFolders( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
         println it.relativeUri
       }
       
-//      println "## Create Folder"      
-//      println FolderOperations.createFolder( connection, "/_api/web", "Freigegebene Dokumente", "test2" )
+      println "## Rename Folder"      
+      println FolderOperations.renameFolder( connection, "/_api/web", "Freigegebene Dokumente/test4", "test4-x" )
+      
+      println "## /Freigegebene Dokumente"      
+      FolderOperations.getFolders( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
+        println it.relativeUri
+      }
+      
+      println "## Delete Folder"      
+      println FolderOperations.deleteFolder( connection, "/_api/web", "Freigegebene Dokumente/test4" )
+      
+      println "## /Freigegebene Dokumente"      
+      FolderOperations.getFolders( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
+        println it.relativeUri
+      }
       
     then:
     
       true
+      
   }
   
   

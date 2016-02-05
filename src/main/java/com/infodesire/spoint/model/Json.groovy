@@ -3,10 +3,11 @@
 
 package com.infodesire.spoint.model;
 
-import com.infodesire.spoint.base.SPCode;
-import com.infodesire.spoint.base.SPException;
+import com.infodesire.spoint.base.SPCode
+import com.infodesire.spoint.base.SPException
 
 import groovy.json.JsonException
+import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
 
@@ -116,6 +117,31 @@ public class Json {
       relativeUri: folder['ServerRelativeUrl'],
       itemCount: folder['ItemCount']
     );
+  }
+
+  public static SPContextInfo parseContextInfo( String content ) {
+    try {
+      def json = new JsonSlurper().parseText( content );
+      def info = json['d']['GetContextWebInformation']
+      return createContextInfo( info );
+    }
+    catch( JsonException ex ) {
+      throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
+    }
+  }
+  
+  private static SPContextInfo createContextInfo( Object info ) {
+    try {
+      return new SPContextInfo(
+        formDigestTimeoutSeconds: info['FormDigestTimeoutSeconds'],
+        formDigestValue: info['FormDigestValue'],
+        siteFullUrl: info['SiteFullUrl'],
+        webFullUrl: info['WebFullUrl']
+      );
+    }
+    catch( JsonException ex ) {
+      throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
+    }
   }
 
   
