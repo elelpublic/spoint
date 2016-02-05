@@ -139,6 +139,20 @@ public class Json {
     );
   }
   
+  private static SPFileVersion createFileVersion( Object file ) {
+    def metadata = file['__metadata'];
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    return new SPFileVersion(
+      checkInComment: file['CheckInComment'],
+      created: df.parse( file['Created'] ),
+      id: file['ID'],
+      isCurrentVersion: file['IsCurrentVersion'],
+      size: file['Size'],
+      url: file['Url'],
+      versionLabel: file['VersionLabel']
+    );
+  }
+  
   public static SPContextInfo parseContextInfo( String content ) {
     try {
       def json = new JsonSlurper().parseText( content );
@@ -171,6 +185,21 @@ public class Json {
       def json = new JsonSlurper().parseText( content );
       json['d']['results'].collect { folder ->
         return createFile( folder );
+      }
+    }
+    catch( JsonException ex ) {
+      throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
+    }
+    
+  }
+  
+  
+  public static List<SPFileVersion> parseFileVersions( String content ) throws SPException {
+    
+    try {
+      def json = new JsonSlurper().parseText( content );
+      json['d']['results'].collect { folder ->
+      return createFileVersion( folder );
       }
     }
     catch( JsonException ex ) {

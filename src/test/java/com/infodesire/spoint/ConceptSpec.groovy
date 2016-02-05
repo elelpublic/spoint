@@ -13,6 +13,7 @@ import com.infodesire.spoint.model.SPContextInfo;
 import com.infodesire.spoint.model.SPFolder
 import com.infodesire.spoint.model.SPList
 import com.infodesire.spoint.model.SPListItem
+import com.infodesire.spoint.operations.CheckinType;
 import com.infodesire.spoint.operations.FolderOperations
 import com.infodesire.spoint.operations.ListOperations
 import com.infodesire.spoint.operations.SiteOperations;
@@ -195,6 +196,23 @@ public class ConceptSpec extends Specification {
       FolderOperations.getFiles( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
         println it
       }
+      
+      println "## Check out File /Freigegebene Dokumente/LICENSE.TXT"
+      FolderOperations.checkOutFile( connection, "/_api/web", "/Freigegebene Dokumente", "LICENSE.TXT" );
+      
+      println "## Check in File /Freigegebene Dokumente/LICENSE.TXT"
+      FolderOperations.checkInFile( connection, "/_api/web", "/Freigegebene Dokumente", "LICENSE.TXT", "all is better now", CheckinType.MinorCheckIn );
+      
+      println "## Get Files /Freigegebene Dokumente"
+      FolderOperations.getFiles( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
+        println it
+      }
+      
+      println "## Get FileVersions /Freigegebene Dokumente/LICENSE.TXT"
+      FolderOperations.getFileVersions( connection, "/_api/web", "/Freigegebene Dokumente", "LICENSE.TXT" ).each {
+        println it
+      }
+      
       
     then:
     

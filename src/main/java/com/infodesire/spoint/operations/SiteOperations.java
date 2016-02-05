@@ -36,6 +36,35 @@ public class SiteOperations extends OperationsBase {
   }
   
   
+  /**
+   * Make sure there is a valid FormDigestValue available with
+   * enough (10s) remaining lifetime.
+   * 
+   * @param connection Current 
+   * @throws SPException on system error or configuration problem
+   */
+  public static String ensureValidDigest( Connection connection ) throws SPException {
+    
+    SPContextInfo contextInfo = connection.getContextInfo();
+    
+    if( contextInfo != null ) {
+      long now = System.currentTimeMillis();
+      if( ( now - contextInfo.getClientTimestamp() ) > ( ( contextInfo
+        .getFormDigestTimeoutSeconds() - 10 ) * 1000 ) ) {
+        contextInfo = null; // was too old
+      }
+    }
+    
+    if( contextInfo == null ) {
+      contextInfo = getContextInfo( connection );
+      connection.setContextInfo( contextInfo );
+    }
+    
+    return contextInfo.getFormDigestValue();
+    
+  }
+  
+  
 }
 
 
