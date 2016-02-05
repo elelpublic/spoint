@@ -9,9 +9,13 @@ import com.infodesire.spoint.base.Response;
 import com.infodesire.spoint.base.SPException;
 import com.infodesire.spoint.model.Json;
 import com.infodesire.spoint.model.SPContextInfo;
+import com.infodesire.spoint.model.SPFile;
 import com.infodesire.spoint.model.SPFolder;
+import com.infodesire.spoint.utils.FilePath;
 import com.infodesire.spoint.utils.SpointUtils;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 
@@ -97,8 +101,10 @@ public class FolderOperations extends OperationsBase {
     String relativeSiteUri, String folderPath ) throws SPException {
     
     String formDigestValue = ensureValidDigest( connection );
-    Response response = performPost( connection, relativeSiteUri,
-      "folders/add('" + enc( folderPath ) + "')", "", formDigestValue, "POST" );
+    String request = "folders/add('" + enc( folderPath ) + "')";
+    
+    Response response = performPost( connection, relativeSiteUri, request, "",
+      null, formDigestValue, "POST" );
     return Json.parseFolder( response.getContent() );
     
   }
@@ -109,7 +115,7 @@ public class FolderOperations extends OperationsBase {
    * 
    * @param connection Sharepoint server connection
    * @param relativeSiteUri Relative uri of site
-   * @param folderPath Relative path of new folder
+   * @param folderPath Relative path of folder
    * @return Lists found
    * @throws SPException on system error or configuration problem
    * 
@@ -118,8 +124,9 @@ public class FolderOperations extends OperationsBase {
     String relativeSiteUri, String folderPath ) throws SPException {
     
     String formDigestValue = ensureValidDigest( connection );
-    performPost( connection, relativeSiteUri,
-      "GetFolderByServerRelativeUrl('/" + enc( folderPath ) + "')", "",
+    String request = "GetFolderByServerRelativeUrl('/" + enc( folderPath ) + "')";
+    
+    performPost( connection, relativeSiteUri, request, "", null,
       formDigestValue, "DELETE" );
     
   }
@@ -130,7 +137,7 @@ public class FolderOperations extends OperationsBase {
    * 
    * @param connection Sharepoint server connection
    * @param relativeSiteUri Relative uri of site
-   * @param folderPath Relative path of new folder
+   * @param folderPath Relative path of folder
    * @param newName New name of folder
    * @return 
    * @return Lists found
@@ -141,14 +148,107 @@ public class FolderOperations extends OperationsBase {
     String relativeSiteUri, String folderPath, String newName ) throws SPException {
     
     String formDigestValue = ensureValidDigest( connection );
-    Response response = performPost( connection, relativeSiteUri,
-      "GetFolderByServerRelativeUrl('/" + enc( folderPath ) + "')", 
-      "{ 'Name': '"+ newName +"' }",
-      formDigestValue, "MERGE" );
+    String request = "GetFolderByServerRelativeUrl('/" + enc( folderPath ) + "')";
+    String content = "{ 'Name': '"+ newName +"' }";
+    
+    Response response = performPost( connection, relativeSiteUri, request,
+      content, null, formDigestValue, "MERGE" );
     return Json.parseFolder( response.getContent() );
     
   }
   
+
+  /**
+   * Get files in a folder
+   * 
+   * @param connection Sharepoint server connection
+   * @param relativeSiteUri Relative uri of site
+   * @param folderPath Relative path of folder
+   * @return Files found
+   * @throws SPException on system error or configuration problem
+   * 
+   */
+  public static List<SPFile> getFiles( Connection connection,
+    String relativeSiteUri, String folderPath ) throws SPException {
+
+    String request = "GetFolderByServerRelativeUrl('/" + enc( folderPath ) + "')/Files";
+    Response response = performGet( connection, relativeSiteUri, request );
+    return Json.parseFiles( response.getContent() );
+
+  }
+  
+  
+  /**
+   * Get file content
+   * 
+   * @param connection Sharepoint server connection
+   * @param relativeSiteUri Relative uri of site
+   * @param folderPath Relative path of folder
+   * @param fileName Name of file
+   * @param target Output stream for file content
+   * @throws SPException on system error or configuration problem
+   * 
+   */
+  public static void getFileContent( Connection connection,
+    String relativeSiteUri, String folderPath, String fileName,
+    OutputStream target ) throws SPException {
+    
+    FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
+    String request = "GetFileByServerRelativeUrl('/"
+      + enc( filePath.toString() ) + "')/$value";
+    
+    performGetRaw( connection, relativeSiteUri, request, target );
+    
+  }
+  
+  
+  /**
+   * Upload file content
+   * 
+   * @param connection Sharepoint server connection
+   * @param relativeSiteUri Relative uri of site
+   * @param folderPath Relative path of folder
+   * @param fileName Name of file
+   * @param content Stream providing file content
+   * @throws SPException on system error or configuration problem
+   * 
+   */
+  public static void uploadFile( Connection connection, String relativeSiteUri,
+    String folderPath, String fileName, InputStream content ) throws SPException {
+
+    String formDigestValue = ensureValidDigest( connection );
+    String request = "GetFolderByServerRelativeUrl('/" + enc( folderPath )
+      + "')/Files/add(url='" + fileName + "',overwrite=true)";
+    
+    performPost( connection, relativeSiteUri, request, null, content,
+      formDigestValue, null );
+    
+  }
+  
+  
+  /**
+   * Delete file
+   * 
+   * @param connection Sharepoint server connection
+   * @param relativeSiteUri Relative uri of site
+   * @param folderPath Relative path of folder
+   * @param fileName
+   * @return Lists found
+   * @throws SPException on system error or configuration problem
+   * 
+   */
+  public static void deleteFile( Connection connection,
+    String relativeSiteUri, String folderPath, String fileName ) throws SPException {
+    
+    String formDigestValue = ensureValidDigest( connection );
+    FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
+    String request = "GetFileByServerRelativeUrl('/" + enc( filePath.toString() ) + "')";
+    
+    performPost( connection, relativeSiteUri, request, "", null,
+      formDigestValue, "DELETE" );
+    
+  }
+
   
   /**
    * Make sure there is a valid FormDigestValue available with

@@ -7,8 +7,10 @@ import com.infodesire.spoint.base.SPCode
 import com.infodesire.spoint.base.SPException
 
 import groovy.json.JsonException
-import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat
 
 
 /**
@@ -119,6 +121,24 @@ public class Json {
     );
   }
 
+  private static SPFile createFile( Object file ) {
+    def metadata = file['__metadata'];
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    DecimalFormat nf = new DecimalFormat("#");
+    return new SPFile(
+      name: file['Name'],
+      serverRelativeUrl: file['ServerRelativeUrl'],
+      timeCreated: df.parse( file['TimeLastModified'] ),
+      timeLastModified: df.parse( file['TimeLastModified'] ),
+      length: nf.parse( file['Length'] ),
+      checkInComment: file['CheckInComment'],
+      checkOutType: file['CheckOutType'],
+      contentTag: file['ContentTag'],
+      exists: file['Exists'],
+      title: file['Title']
+    );
+  }
+  
   public static SPContextInfo parseContextInfo( String content ) {
     try {
       def json = new JsonSlurper().parseText( content );
@@ -144,6 +164,21 @@ public class Json {
     }
   }
 
+  
+  public static List<SPFile> parseFiles( String content ) throws SPException {
+    
+    try {
+      def json = new JsonSlurper().parseText( content );
+      json['d']['results'].collect { folder ->
+        return createFile( folder );
+      }
+    }
+    catch( JsonException ex ) {
+      throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
+    }
+    
+  }
+  
   
 }
 

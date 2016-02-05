@@ -7,6 +7,7 @@ import com.google.common.io.ByteStreams;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 
 import org.apache.http.HttpEntity;
@@ -86,12 +87,14 @@ public class LowLevel {
    * 
    * @param connection Connection
    * @param path Request uri
+   * @param target Optional output stream for reply data
    * @return Response from server
    * @throws ClientProtocolException Http problem
    * @throws IOException Http communication problem
    * 
    */
-  public static Response performGet( Connection connection, String path ) throws ClientProtocolException, IOException {
+  public static Response performGet( Connection connection, String path,
+    OutputStream target ) throws ClientProtocolException, IOException {
     
     HttpClient httpClient = connection.getHttpClient();
     HttpHost httpHost = connection.getHttpHost();
@@ -100,6 +103,7 @@ public class LowLevel {
     HttpGet httpGet = new HttpGet( path );
     CloseableHttpResponse httpResponse = null;
     Response response = new Response();
+    InputStream data = null;
     
     try {
       
@@ -108,13 +112,24 @@ public class LowLevel {
       response.setStatusCode( response.getStatusLine().getStatusCode() );
     
       HttpEntity entity = httpResponse.getEntity();
-      InputStream data = entity.getContent();
-      String text = new String( ByteStreams.toByteArray( data ), "UTF-8" );
-      response.setContent( text );
-      data.close();
+      data = entity.getContent();
+      
+      if( target != null ) {
+        ByteStreams.copy( data, target );
+      }
+      else {
+        String text = new String( ByteStreams.toByteArray( data ), "UTF-8" );
+        response.setContent( text );
+      }
       
     } 
     finally {
+      if( data != null ) {
+        data.close();
+      }
+      if( target != null ) {
+        target.close();
+      }
       if( httpResponse != null ) {
         httpResponse.close();
       }
@@ -130,6 +145,8 @@ public class LowLevel {
    * 
    * @param connection Connection
    * @param path Request uri
+   * @param contentAsString Request body as string
+   * @param contentAsStream Request body as stream
    * @param xHttpMethod Header value for X-HTTP-Method
    * @return Response from server
    * @throws ClientProtocolException Http problem
@@ -137,16 +154,24 @@ public class LowLevel {
    * 
    */
   public static Response performPost( Connection connection, String path,
-    String content, String formDigestValue, String xHttpMethod )
-    throws ClientProtocolException, IOException {
+    String contentAsString, InputStream contentAsStream, String formDigestValue,
+    String xHttpMethod ) throws ClientProtocolException, IOException {
     
     HttpClient httpClient = connection.getHttpClient();
     HttpHost httpHost = connection.getHttpHost();
     HttpContext context = connection.getContext();
     
     HttpPost requestObject = new HttpPost( path );
-    requestObject.setEntity( new ByteArrayEntity( content.toString().getBytes(
-      "UTF8" ) ) );
+    
+    if( contentAsString != null ) {
+      requestObject.setEntity( new ByteArrayEntity( contentAsString.toString()
+        .getBytes( "UTF8" ) ) );
+    }
+    else if( contentAsStream != null ) {
+      requestObject.setEntity( new ByteArrayEntity( ByteStreams.toByteArray(
+        contentAsStream ) ) );
+    }
+    
     if( xHttpMethod != null ) {
       requestObject.addHeader( "X-HTTP-Method", xHttpMethod );
     }

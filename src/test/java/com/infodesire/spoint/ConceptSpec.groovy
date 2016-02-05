@@ -3,6 +3,8 @@
 
 package com.infodesire.spoint;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 import com.infodesire.spoint.base.Config
 import com.infodesire.spoint.base.Connection
 import com.infodesire.spoint.base.LowLevel
@@ -45,7 +47,7 @@ public class ConceptSpec extends Specification {
       );
     
       Connection connection = LowLevel.connect( config );
-      Response response = LowLevel.performGet( connection, "/_api/web/title" );
+      Response response = LowLevel.performGet( connection, "/_api/web/title", null );
       
     then:
     
@@ -137,29 +139,61 @@ public class ConceptSpec extends Specification {
 //      println LowLevel.performPost( connection, "/_api/web/folders/add('/Freigegebene%20Dokumente/test3')", content, contextInfo.formDigestValue )
 //      
 //
-            
-      println "## Create Folder"      
-      println FolderOperations.createFolder( connection, "/_api/web", "Freigegebene Dokumente/test4" )
+//            
+//      println "## Create Folder"      
+//      println FolderOperations.createFolder( connection, "/_api/web", "Freigegebene Dokumente/test4" )
+//      
+//      println "## /Freigegebene Dokumente"      
+//      FolderOperations.getFolders( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
+//        println it.relativeUri
+//      }
+//      
+//      println "## Rename Folder"      
+//      println FolderOperations.renameFolder( connection, "/_api/web", "Freigegebene Dokumente/test4", "test4-x" )
+//      
+//      println "## /Freigegebene Dokumente"      
+//      FolderOperations.getFolders( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
+//        println it.relativeUri
+//      }
+//      
+//      println "## Delete Folder"      
+//      println FolderOperations.deleteFolder( connection, "/_api/web", "Freigegebene Dokumente/test4" )
+//      
+//      println "## /Freigegebene Dokumente"      
+//      FolderOperations.getFolders( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
+//        println it.relativeUri
+//      }
       
-      println "## /Freigegebene Dokumente"      
-      FolderOperations.getFolders( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
-        println it.relativeUri
+      
+      println "## Get Files /Freigegebene Dokumente"
+      FolderOperations.getFiles( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
+        println it
       }
       
-      println "## Rename Folder"      
-      println FolderOperations.renameFolder( connection, "/_api/web", "Freigegebene Dokumente/test4", "test4-x" )
+      println "## Get File /Freigegebene Dokumente/LICENSE.TXT"
+      File file = File.createTempFile( "LICENSE.TXT", "" );
+      file.deleteOnExit();
+      FileOutputStream fout = new FileOutputStream( file );
+      FolderOperations.getFileContent( connection, "/_api/web", "/Freigegebene Dokumente", "LICENSE.TXT", fout )
+      println Files.toString( file, Charsets.UTF_8 );
+      file.delete();
       
-      println "## /Freigegebene Dokumente"      
-      FolderOperations.getFolders( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
-        println it.relativeUri
+      println "## Upload File /Freigegebene Dokumente/testX"
+      file = createTempFile( "test4.txt", "test4 " + new Date() );
+      FileInputStream fin = new FileInputStream( file );
+      FolderOperations.uploadFile( connection, "/_api/web", "/Freigegebene Dokumente", file.getName(), fin );
+      
+      println "## Get Files /Freigegebene Dokumente"
+      FolderOperations.getFiles( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
+        println it
       }
+
+      println "## Delete File /Freigegebene Dokumente/testX"
+      FolderOperations.deleteFile( connection, "/_api/web", "/Freigegebene Dokumente", file.getName() );
       
-      println "## Delete Folder"      
-      println FolderOperations.deleteFolder( connection, "/_api/web", "Freigegebene Dokumente/test4" )
-      
-      println "## /Freigegebene Dokumente"      
-      FolderOperations.getFolders( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
-        println it.relativeUri
+      println "## Get Files /Freigegebene Dokumente"
+      FolderOperations.getFiles( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
+        println it
       }
       
     then:
@@ -168,6 +202,15 @@ public class ConceptSpec extends Specification {
       
   }
   
+  
+  
+  private File createTempFile( String name, String content ) {
+    File file = new File( "temp/" + name );
+    file.getParentFile().mkdirs();
+    file.delete();
+    Files.write( content, file, Charsets.UTF_8 );
+    return file;
+  }
   
 
   private Properties loadProperties() {

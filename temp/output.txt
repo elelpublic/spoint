@@ -1,4 +1,70 @@
 // --------------------------------------------------------------------------------------------------
+// Get Files
+
+
+{
+    "d": {
+        "results": [
+            {
+                "__metadata": {
+                    "id": "https://sp10937.hostedoffice.ag/_api/Web/GetFileByServerRelativeUrl('/Freigegebene Dokumente/LICENSE.TXT')",
+                    "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFileByServerRelativeUrl('/Freigegebene%20Dokumente/LICENSE.TXT')",
+                    "type": "SP.File"
+                },
+                "Author": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFileByServerRelativeUrl('/Freigegebene%20Dokumente/LICENSE.TXT')/Author"
+                    }
+                },
+                "CheckedOutByUser": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFileByServerRelativeUrl('/Freigegebene%20Dokumente/LICENSE.TXT')/CheckedOutByUser"
+                    }
+                },
+                "ListItemAllFields": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFileByServerRelativeUrl('/Freigegebene%20Dokumente/LICENSE.TXT')/ListItemAllFields"
+                    }
+                },
+                "LockedByUser": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFileByServerRelativeUrl('/Freigegebene%20Dokumente/LICENSE.TXT')/LockedByUser"
+                    }
+                },
+                "ModifiedBy": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFileByServerRelativeUrl('/Freigegebene%20Dokumente/LICENSE.TXT')/ModifiedBy"
+                    }
+                },
+                "Versions": {
+                    "__deferred": {
+                        "uri": "https://sp10937.hostedoffice.ag/_api/Web/GetFileByServerRelativeUrl('/Freigegebene%20Dokumente/LICENSE.TXT')/Versions"
+                    }
+                },
+                "CheckInComment": "",
+                "CheckOutType": 2,
+                "ContentTag": "{E19A281B-C0B1-4F0D-8342-2541F37ABAD5},1,1",
+                "CustomizedPageStatus": 0,
+                "ETag": "\"{E19A281B-C0B1-4F0D-8342-2541F37ABAD5},1\"",
+                "Exists": true,
+                "Length": "6035",
+                "Level": 1,
+                "MajorVersion": 1,
+                "MinorVersion": 0,
+                "Name": "LICENSE.TXT",
+                "ServerRelativeUrl": "/Freigegebene Dokumente/LICENSE.TXT",
+                "TimeCreated": "2016-01-28T16:43:27Z",
+                "TimeLastModified": "2016-01-28T16:43:27Z",
+                "Title": null,
+                "UIVersion": 512,
+                "UIVersionLabel": "1.0"
+            }
+        ]
+    }
+}
+
+
+// --------------------------------------------------------------------------------------------------
 // ContextInfo
 
 
