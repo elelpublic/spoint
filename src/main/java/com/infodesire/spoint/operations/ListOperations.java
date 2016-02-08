@@ -19,85 +19,87 @@ import java.util.List;
  *
  */
 public class ListOperations extends OperationsBase {
-  
+
 
   /**
    * Load all lists
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @return Lists found
    * @throws SPException on system error or configuration problem
    * 
    */
-  public static List<SPList> getLists( Connection connection, String relativeSiteUri ) throws SPException {
+  public static List<SPList> getLists( Connection connection )
+    throws SPException {
 
-    Response response = performGet( connection, relativeSiteUri, "lists" );
+    String description = "All lists";
+    Response response = performGet( connection, API + "lists", description );
     return Json.parseLists( response.getContent() );
 
   }
-  
-  
+
+
   /**
    * Load list by title
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param title List title
    * @return List
    * @throws SPException on system error or configuration problem
    * 
    */
-  public static SPList getListByTitle( Connection connection, String relativeSiteUri, String title )
+  public static SPList getListByTitle( Connection connection, String title )
     throws SPException {
-    
-    Response response = performGet( connection, relativeSiteUri,
-      "lists/getbytitle('" + enc( title ) + "')" );
+
+    String description = "List with title " + title;
+
+    Response response = performGet( connection, API + "lists/getbytitle('"
+      + enc( title ) + "')", description );
     return Json.parseList( response.getContent() );
 
   }
-  
-  
+
+
   /**
    * Load list by id
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param id List id (GUID)
    * @return List
    * @throws SPException on system error or configuration problem
    * 
    */
-  public static SPList getListById( Connection connection, String relativeSiteUri, String id )
+  public static SPList getListById( Connection connection, String id )
     throws SPException {
-    
-    Response response = performGet( connection, relativeSiteUri,
-      "lists(guid'" + id + "')" );
+
+    String description = "List with id " + id;
+
+    Response response = performGet( connection, API + "lists(guid'" + id + "')",
+      description );
     return Json.parseList( response.getContent() );
-    
+
   }
-  
-  
+
+
   /**
    * Load list items by list title
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param title List title
    * @return List
    * @throws SPException on system error or configuration problem
    * 
    */
   public static List<SPListItem> getListItemsByTitle( Connection connection,
-    String relativeSiteUri, String title ) throws SPException {
-    
-    Response response = performGet( connection, relativeSiteUri,
-      "lists/getbytitle('" + enc( title ) + "')/items" );
+    String title ) throws SPException {
+
+    String description = "Items of list with title " + title;
+
+    Response response = performGet( connection, API + "lists/getbytitle('"
+      + enc( title ) + "')/items", description );
     return Json.parseListItems( response.getContent() );
-    
+
   }
 
 
 }
-
-

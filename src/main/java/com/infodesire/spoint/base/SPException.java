@@ -11,9 +11,9 @@ package com.infodesire.spoint.base;
 public class SPException extends Exception {
   
   
-  private static final long serialVersionUID = 1093656393163389613L;
-  private SPCode code;
-  private Response response;
+  protected static final long serialVersionUID = 1093656393163389613L;
+  protected SPCode code;
+  protected Response response;
   
 
   public SPException( SPCode code, Response response, Throwable cause, String message ) {

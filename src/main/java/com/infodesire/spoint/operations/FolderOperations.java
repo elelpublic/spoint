@@ -24,44 +24,42 @@ import java.util.List;
  *
  */
 public class FolderOperations extends OperationsBase {
-  
+
 
   /**
    * Load all root folders
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @return Lists found
    * @throws SPException on system error or configuration problem
    * 
    */
-  public static List<SPFolder> getRootFolders( Connection connection,
-    String relativeSiteUri ) throws SPException {
-    return getFolders( connection, relativeSiteUri, null );
+  public static List<SPFolder> getRootFolders( Connection connection )
+    throws SPException {
+    return getFolders( connection, null );
   }
-  
-  
+
+
   /**
    * Load folders
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param parentFolder Path of parent folder
    * @return Lists found
    * @throws SPException on system error or configuration problem
    * 
    */
   public static List<SPFolder> getFolders( Connection connection,
-    String relativeSiteUri, String parentFolder ) throws SPException {
+    String parentFolder ) throws SPException {
 
     String request = "folders";
     if( parentFolder != null ) {
       request = "getfolderbyserverrelativeurl('"
         + SpointUtils.encodeForUrl( parentFolder ) + "')/folders";
     }
-    
-    Response response = performGet( connection, relativeSiteUri,
-      request );
+    String description = "Subfolders of " + parentFolder;
+
+    Response response = performGet( connection, API + request, description );
     return Json.parseFolders( response.getContent() );
 
   }
@@ -71,42 +69,44 @@ public class FolderOperations extends OperationsBase {
    * Get folder by relative path
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param folderPath Relative path of folder
    * @return Lists found
    * @throws SPException on system error or configuration problem
    * 
    */
-  public static SPFolder getFolder( Connection connection,
-    String relativeSiteUri, String folderPath ) throws SPException {
-    
-    Response response = performGet( connection, relativeSiteUri,
-      "getfolderbyserverrelativeurl('" + enc( folderPath ) + "')" );
+  public static SPFolder getFolder( Connection connection, String folderPath )
+    throws SPException {
+
+    String request = "getfolderbyserverrelativeurl('" + enc( folderPath )
+      + "')";
+    String description = "Folder " + folderPath;
+
+    Response response = performGet( connection, API + request, description );
     return Json.parseFolder( response.getContent() );
 
   }
-  
-  
+
+
   /**
    * Create folder
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param folderPath Relative path of new folder
    * @return Lists found
    * @throws SPException on system error or configuration problem
    * 
    */
-  public static SPFolder createFolder( Connection connection,
-    String relativeSiteUri, String folderPath ) throws SPException {
-    
+  public static SPFolder createFolder( Connection connection, String folderPath )
+    throws SPException {
+
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
     String request = "folders/add('" + enc( folderPath ) + "')";
-    
-    Response response = performPost( connection, relativeSiteUri, request, null,
-      null, formDigestValue, "POST" );
+    String description = "New folder " + folderPath;
+
+    Response response = performPost( connection, API + request, null, null,
+      formDigestValue, "POST", description );
     return Json.parseFolder( response.getContent() );
-    
+
   }
 
 
@@ -114,172 +114,175 @@ public class FolderOperations extends OperationsBase {
    * Delete folder
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param folderPath Relative path of folder
    * @return Lists found
    * @throws SPException on system error or configuration problem
    * 
    */
-  public static void deleteFolder( Connection connection,
-    String relativeSiteUri, String folderPath ) throws SPException {
-    
+  public static void deleteFolder( Connection connection, String folderPath )
+    throws SPException {
+
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
-    String request = "GetFolderByServerRelativeUrl('/" + enc( folderPath ) + "')";
-    
-    performPost( connection, relativeSiteUri, request, null, null,
-      formDigestValue, "DELETE" );
-    
+    String request = "GetFolderByServerRelativeUrl('/" + enc( folderPath )
+      + "')";
+    String description = "Folder " + folderPath;
+
+    performPost( connection, API + request, null, null, formDigestValue,
+      "DELETE", description );
+
   }
-  
-  
+
+
   /**
    * Rename folder
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param folderPath Relative path of folder
    * @param newName New name of folder
-   * @return 
+   * @return
    * @return Lists found
    * @throws SPException on system error or configuration problem
    * 
    */
   public static SPFolder renameFolder( Connection connection,
-    String relativeSiteUri, String folderPath, String newName ) throws SPException {
-    
+    String folderPath, String newName ) throws SPException {
+
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
-    String request = "GetFolderByServerRelativeUrl('/" + enc( folderPath ) + "')";
-    String content = "{ 'Name': '"+ newName +"' }";
-    
-    Response response = performPost( connection, relativeSiteUri, request,
-      content, null, formDigestValue, "MERGE" );
+    String request = "GetFolderByServerRelativeUrl('/" + enc( folderPath )
+      + "')";
+    String content = "{ 'Name': '" + newName + "' }";
+    String description = "Folder " + folderPath;
+
+    Response response = performPost( connection, API + request, content, null,
+      formDigestValue, "MERGE", description );
     return Json.parseFolder( response.getContent() );
-    
+
   }
-  
+
 
   /**
    * Get files in a folder
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param folderPath Relative path of folder
    * @return Files found
    * @throws SPException on system error or configuration problem
    * 
    */
-  public static List<SPFile> getFiles( Connection connection,
-    String relativeSiteUri, String folderPath ) throws SPException {
+  public static List<SPFile> getFiles( Connection connection, String folderPath )
+    throws SPException {
 
-    String request = "GetFolderByServerRelativeUrl('/" + enc( folderPath ) + "')/Files";
-    Response response = performGet( connection, relativeSiteUri, request );
+    String request = "GetFolderByServerRelativeUrl('/" + enc( folderPath )
+      + "')/Files";
+    String description = "Files of folder " + folderPath;
+
+    Response response = performGet( connection, API + request, description );
     return Json.parseFiles( response.getContent() );
 
   }
-  
-  
+
+
   /**
    * Get file content
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param folderPath Relative path of folder
    * @param fileName Name of file
    * @param target Output stream for file content
    * @throws SPException on system error or configuration problem
    * 
    */
-  public static void getFileContent( Connection connection,
-    String relativeSiteUri, String folderPath, String fileName,
-    OutputStream target ) throws SPException {
-    
+  public static void getFileContent( Connection connection, String folderPath,
+    String fileName, OutputStream target ) throws SPException {
+
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
     String request = "GetFileByServerRelativeUrl('/"
       + enc( filePath.toString() ) + "')/$value";
-    
-    performGetRaw( connection, relativeSiteUri, request, target );
-    
+    String description = "Content of file " + fileName + " in folder "
+      + folderPath;
+
+    performGetRaw( connection, API + request, target, description );
+
   }
-  
-  
+
+
   /**
    * Upload file content
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param folderPath Relative path of folder
    * @param fileName Name of file
    * @param content Stream providing file content
    * @throws SPException on system error or configuration problem
    * 
    */
-  public static void uploadFile( Connection connection, String relativeSiteUri,
-    String folderPath, String fileName, InputStream content ) throws SPException {
+  public static void uploadFile( Connection connection, String folderPath,
+    String fileName, InputStream content ) throws SPException {
 
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
     String request = "GetFolderByServerRelativeUrl('/" + enc( folderPath )
       + "')/Files/add(url='" + fileName + "',overwrite=true)";
-    
-    performPost( connection, relativeSiteUri, request, null, content,
-      formDigestValue, null );
-    
+    String description = "File " + fileName + " in folder " + folderPath;
+
+    performPost( connection, API + request, null, content, formDigestValue,
+      null, description );
+
   }
-  
-  
+
+
   /**
    * Delete file
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param folderPath Relative path of folder
    * @param fileName Name of file
    * @throws SPException on system error or configuration problem
    * 
    */
-  public static void deleteFile( Connection connection,
-    String relativeSiteUri, String folderPath, String fileName ) throws SPException {
-    
+  public static void deleteFile( Connection connection, String folderPath,
+    String fileName ) throws SPException {
+
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
-    String request = "GetFileByServerRelativeUrl('/" + enc( filePath.toString() ) + "')";
-    
-    performPost( connection, relativeSiteUri, request, null, null,
-      formDigestValue, "DELETE" );
-    
+    String request = "GetFileByServerRelativeUrl('/"
+      + enc( filePath.toString() ) + "')";
+    String description = "File " + fileName + " in folder " + folderPath;
+
+    performPost( connection, API + request, null, null, formDigestValue,
+      "DELETE", description );
+
   }
 
-  
+
   /**
    * Check out file
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param folderPath Relative path of folder
    * @param fileName Name of file
    * @return Lists found
    * @throws SPException on system error or configuration problem
    * 
    */
-  public static void checkOutFile( Connection connection,
-    String relativeSiteUri, String folderPath, String fileName )
-    throws SPException {
-    
+  public static void checkOutFile( Connection connection, String folderPath,
+    String fileName ) throws SPException {
+
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
     String request = "GetFileByServerRelativeUrl('/"
       + enc( filePath.toString() ) + "')/CheckOut()";
-    
-    performPost( connection, relativeSiteUri, request, null, null,
-      formDigestValue, null );
-    
+    String description = "File " + fileName + " in folder " + folderPath;
+
+    performPost( connection, API + request, null, null, formDigestValue, null,
+      description );
+
   }
-  
-  
+
+
   /**
    * Check in file
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param folderPath Relative path of folder
    * @param fileName Name of file
    * @param comment Check in comment
@@ -287,27 +290,27 @@ public class FolderOperations extends OperationsBase {
    * @throws SPException on system error or configuration problem
    * 
    */
-  public static void checkInFile( Connection connection,
-    String relativeSiteUri, String folderPath, String fileName, String comment,
-    CheckinType checkInType ) throws SPException {
-    
+  public static void checkInFile( Connection connection, String folderPath,
+    String fileName, String comment, CheckinType checkInType )
+    throws SPException {
+
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
     String request = "GetFileByServerRelativeUrl('/"
       + enc( filePath.toString() ) + "')/CheckIn(comment='" + enc( comment )
       + "',checkintype=" + checkInType.getType() + ")";
-    
-    performPost( connection, relativeSiteUri, request, null, null,
-      formDigestValue, null );
-    
+    String description = "File " + fileName + " in folder " + folderPath;
+
+    performPost( connection, API + request, null, null, formDigestValue, null,
+      description );
+
   }
-  
-  
+
+
   /**
    * Get versions of a file
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param folderPath Relative path of folder
    * @param fileName Name of file
    * @return Files found
@@ -315,23 +318,24 @@ public class FolderOperations extends OperationsBase {
    * 
    */
   public static List<SPFileVersion> getFileVersions( Connection connection,
-    String relativeSiteUri, String folderPath, String fileName ) throws SPException {
+    String folderPath, String fileName ) throws SPException {
 
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
     String request = "GetFileByServerRelativeUrl('/"
       + enc( filePath.toString() ) + "')/Versions";
+    String description = "Versions of file " + fileName + " in folder "
+      + folderPath;
 
-    Response response = performGet( connection, relativeSiteUri, request );
+    Response response = performGet( connection, API + request, description );
     return Json.parseFileVersions( response.getContent() );
 
   }
 
 
   /**
-   * Get versions of a file
+   * Get version of a file
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param folderPath Relative path of folder
    * @param fileName Name of file
    * @param id File version id
@@ -340,23 +344,24 @@ public class FolderOperations extends OperationsBase {
    * 
    */
   public static SPFileVersion getFileVersion( Connection connection,
-    String relativeSiteUri, String folderPath, String fileName, int id ) throws SPException {
-    
+    String folderPath, String fileName, int id ) throws SPException {
+
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
     String request = "GetFileByServerRelativeUrl('/"
       + enc( filePath.toString() ) + "')/Versions(" + id + ")";
-    
-    Response response = performGet( connection, relativeSiteUri, request );
+    String description = "Version " + id + " of file " + fileName
+      + " in folder " + folderPath;
+
+    Response response = performGet( connection, API + request, description );
     return Json.parseFileVersion( response.getContent() );
-    
+
   }
-  
-  
+
+
   /**
    * Get file version content
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param folderPath Relative path of folder
    * @param fileName Name of file
    * @param id File version id
@@ -365,22 +370,23 @@ public class FolderOperations extends OperationsBase {
    * 
    */
   public static void getFileVersionContent( Connection connection,
-    String relativeSiteUri, String folderPath, String fileName, int id,
-    OutputStream target ) throws SPException {
-    
+    String folderPath, String fileName, int id, OutputStream target )
+    throws SPException {
+
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
     String request = id + "/" + encElements( filePath ).toString();
-    relativeSiteUri = "/_vti_history";
-    performGetRaw( connection, relativeSiteUri, request, target );
-    
+    String description = "Content of version " + id + " of file " + fileName
+      + " in folder " + folderPath;
+
+    performGetRaw( connection, API_HISTORY + request, target, description );
+
   }
-  
-  
+
+
   /**
    * Delete file version
    * 
    * @param connection Sharepoint server connection
-   * @param relativeSiteUri Relative uri of site
    * @param folderPath Relative path of folder
    * @param fileName Name of file
    * @param id Id of file version
@@ -388,19 +394,19 @@ public class FolderOperations extends OperationsBase {
    * 
    */
   public static void deleteFileVersion( Connection connection,
-    String relativeSiteUri, String folderPath, String fileName, int id ) throws SPException {
-    
+    String folderPath, String fileName, int id ) throws SPException {
+
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
     String request = "GetFileByServerRelativeUrl('" + enc( filePath.toString() )
       + "')/Versions/DeleteById(vid=" + id + ")";
-    
-    performPost( connection, relativeSiteUri, request, null, null,
-      formDigestValue, null );
-    
+    String description = "Version " + id + " of file " + fileName
+      + " in folder " + folderPath;
+
+    performPost( connection, API + request, null, null, formDigestValue, null,
+      description );
+
   }
 
-  
+
 }
-
-

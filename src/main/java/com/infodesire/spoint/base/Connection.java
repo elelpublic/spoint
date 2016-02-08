@@ -27,6 +27,7 @@ public class Connection {
   private String host;
   private int port;
   private String protocol;
+  private String site;
   private HttpClientContext context;
   private HttpClient httpClient;
   private HttpHost httpHost;
@@ -157,6 +158,14 @@ public class Connection {
    */
   public void setContextInfo( SPContextInfo contextInfo ) {
     this.contextInfo = contextInfo;
+  }
+
+  
+  /**
+   * @return Relative URI of site. Null for default site.
+   */
+  public String getSite() {
+    return site;
   }
 
 

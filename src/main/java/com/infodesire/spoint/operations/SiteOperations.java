@@ -29,8 +29,8 @@ public class SiteOperations extends OperationsBase {
    */
   public static SPContextInfo getContextInfo( Connection connection ) throws SPException {
     
-    Response response = performPost( connection, "/_api", "contextinfo", "",
-      null, null, "POST" );
+    Response response = performPost( connection, "/_api/contextinfo", "", null,
+      null, "POST", "Context information" );
     return Json.parseContextInfo( response.getContent() );
     
   }
