@@ -38,6 +38,7 @@ public class Json {
     try {
       def json = new JsonSlurper().parseText( content );
       def list = json['d']
+      checkFound( list );
       return createList( list );
     }
     catch( JsonException ex ) {
@@ -81,6 +82,7 @@ public class Json {
     try {
       def json = new JsonSlurper().parseText( content );
       def folder = json['d'];
+      checkFound( folder );
       return createFolder( folder );
     }
     catch( JsonException ex ) {
@@ -206,6 +208,35 @@ public class Json {
       throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
     }
     
+  }
+  
+  
+  public static SPFileVersion parseFileVersion( String content ) throws SPException {
+    
+    try {
+      def json = new JsonSlurper().parseText( content );
+      Object fileVersion = json['d'];
+      checkFound( fileVersion );
+      return createFileVersion( fileVersion );
+    }
+    catch( JsonException ex ) {
+      throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
+    }
+    
+  }
+  
+  
+  /**
+   * Check if server returned a valid object - otherwise: NOT_FOUND exception
+   * 
+   * @param object JSON object from server
+   * @throws SPException if no value SP object is in the data
+   * 
+   */
+  private static void checkFound( Object object ) throws SPException {
+    if( object['__metadata'] == null ) {
+      throw new SPException( SPCode.NOT_FOUND, null, null, null );
+    }
   }
   
   

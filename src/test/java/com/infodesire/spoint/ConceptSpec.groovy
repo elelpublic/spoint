@@ -3,20 +3,19 @@
 
 package com.infodesire.spoint;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
+import com.google.common.base.Charsets
+import com.google.common.io.Files
 import com.infodesire.spoint.base.Config
 import com.infodesire.spoint.base.Connection
 import com.infodesire.spoint.base.LowLevel
 import com.infodesire.spoint.base.Response
-import com.infodesire.spoint.model.SPContextInfo;
+import com.infodesire.spoint.model.SPContextInfo
+import com.infodesire.spoint.model.SPFileVersion
 import com.infodesire.spoint.model.SPFolder
 import com.infodesire.spoint.model.SPList
 import com.infodesire.spoint.model.SPListItem
-import com.infodesire.spoint.operations.CheckinType;
 import com.infodesire.spoint.operations.FolderOperations
-import com.infodesire.spoint.operations.ListOperations
-import com.infodesire.spoint.operations.SiteOperations;
+import com.infodesire.spoint.operations.SiteOperations
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
@@ -70,6 +69,8 @@ public class ConceptSpec extends Specification {
       List<SPFolder> folders
       String content
       SPContextInfo contextInfo
+      File file
+      SPFileVersion fileVersion
       
       contextInfo = SiteOperations.getContextInfo( connection );
       println contextInfo
@@ -164,56 +165,77 @@ public class ConceptSpec extends Specification {
 //      FolderOperations.getFolders( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
 //        println it.relativeUri
 //      }
-      
-      
-      println "## Get Files /Freigegebene Dokumente"
-      FolderOperations.getFiles( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
-        println it
-      }
-      
-      println "## Get File /Freigegebene Dokumente/LICENSE.TXT"
-      File file = File.createTempFile( "LICENSE.TXT", "" );
+//  
+//  
+//      println "## Get Files /Freigegebene Dokumente"
+//      FolderOperations.getFiles( connection, "/_api/web", "/Freigegebene Dokumente" ).each { println it }
+//  
+      println "## Get FileContent /Freigegebene Dokumente/LICENSE.TXT"
+      file = File.createTempFile( "LICENSE.TXT", "" );
       file.deleteOnExit();
       FileOutputStream fout = new FileOutputStream( file );
       FolderOperations.getFileContent( connection, "/_api/web", "/Freigegebene Dokumente", "LICENSE.TXT", fout )
       println Files.toString( file, Charsets.UTF_8 );
       file.delete();
-      
-      println "## Upload File /Freigegebene Dokumente/testX"
-      file = createTempFile( "test4.txt", "test4 " + new Date() );
-      FileInputStream fin = new FileInputStream( file );
-      FolderOperations.uploadFile( connection, "/_api/web", "/Freigegebene Dokumente", file.getName(), fin );
-      
-      println "## Get Files /Freigegebene Dokumente"
-      FolderOperations.getFiles( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
-        println it
-      }
+//  
+//      println "## Upload File /Freigegebene Dokumente/testX"
+//      file = createTempFile( "test4.txt", "test4 " + new Date() );
+//      FileInputStream fin = new FileInputStream( file );
+//      FolderOperations.uploadFile( connection, "/_api/web", "/Freigegebene Dokumente", file.getName(), fin );
+//  
+//      println "## Upload Large File /Freigegebene Dokumente/testX"
+//      File bigfile = new File( "temp/bigfile" );
+//      fin = new FileInputStream( bigfile );
+//      FolderOperations.uploadFile( connection, "/_api/web", "/Freigegebene Dokumente", bigfile.getName(), fin );
+//      
+//      println "## Get Files /Freigegebene Dokumente"
+//      FolderOperations.getFiles( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
+//        println it
+//      }
+//
+//      println "## Delete File /Freigegebene Dokumente/testX"
+//      FolderOperations.deleteFile( connection, "/_api/web", "/Freigegebene Dokumente", file.getName() );
+//      
+//      println "## Get Files /Freigegebene Dokumente"
+//      FolderOperations.getFiles( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
+//        println it
+//      }
+//      
+//      println "## Check out File /Freigegebene Dokumente/LICENSE.TXT"
+//      FolderOperations.checkOutFile( connection, "/_api/web", "/Freigegebene Dokumente", "LICENSE.TXT" );
+//      
+//      println "## Check in File /Freigegebene Dokumente/LICENSE.TXT"
+//      FolderOperations.checkInFile( connection, "/_api/web", "/Freigegebene Dokumente", "LICENSE.TXT", "all is better now", CheckinType.MinorCheckIn );
+//      
+//      println "## Get Files /Freigegebene Dokumente"
+//      FolderOperations.getFiles( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
+//        println it
+//      }
+//      
+//      println "## Get FileVersions /Freigegebene Dokumente/LICENSE.TXT"
+//      FolderOperations.getFileVersions( connection, "/_api/web", "/Freigegebene Dokumente", "LICENSE.TXT" ).each {
+//        println it.id
+//      }
+//      
+//      println "## Get FileVersion /Freigegebene Dokumente/LICENSE.TXT 512"
+//      println FolderOperations.getFileVersion( connection, "/_api/web", "/Freigegebene Dokumente", "LICENSE.TXT", 512 )
+//      
+//      println "## Get FileVersion Content /Freigegebene Dokumente/LICENSE.TXT 1536"
+//      file = File.createTempFile( "LICENSE-1536.TXT", "" );
+//      file.deleteOnExit();
+//      FileOutputStream fout = new FileOutputStream( file );
+//      FolderOperations.getFileVersionContent( connection, "/_api/web", "Freigegebene Dokumente", "LICENSE.TXT", 1536, fout )
+//      println Files.toString( file, Charsets.UTF_8 );
+//      file.delete();
+//
+//      println "## Delete FileVersion /Freigegebene Dokumente/LICENSE.TXT 1536"
+//      FolderOperations.deleteFileVersion( connection, "/_api/web", "/Freigegebene Dokumente", "LICENSE.TXT", 1536 );
+//      
+//      println "## Get FileVersions /Freigegebene Dokumente/LICENSE.TXT"
+//      FolderOperations.getFileVersions( connection, "/_api/web", "/Freigegebene Dokumente", "LICENSE.TXT" ).each {
+//        println it.id
+//      }
 
-      println "## Delete File /Freigegebene Dokumente/testX"
-      FolderOperations.deleteFile( connection, "/_api/web", "/Freigegebene Dokumente", file.getName() );
-      
-      println "## Get Files /Freigegebene Dokumente"
-      FolderOperations.getFiles( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
-        println it
-      }
-      
-      println "## Check out File /Freigegebene Dokumente/LICENSE.TXT"
-      FolderOperations.checkOutFile( connection, "/_api/web", "/Freigegebene Dokumente", "LICENSE.TXT" );
-      
-      println "## Check in File /Freigegebene Dokumente/LICENSE.TXT"
-      FolderOperations.checkInFile( connection, "/_api/web", "/Freigegebene Dokumente", "LICENSE.TXT", "all is better now", CheckinType.MinorCheckIn );
-      
-      println "## Get Files /Freigegebene Dokumente"
-      FolderOperations.getFiles( connection, "/_api/web", "/Freigegebene Dokumente" ).each {
-        println it
-      }
-      
-      println "## Get FileVersions /Freigegebene Dokumente/LICENSE.TXT"
-      FolderOperations.getFileVersions( connection, "/_api/web", "/Freigegebene Dokumente", "LICENSE.TXT" ).each {
-        println it
-      }
-      
-      
     then:
     
       true

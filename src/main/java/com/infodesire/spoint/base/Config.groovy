@@ -19,6 +19,15 @@ public class Config {
   String domain
   
   int connectionTimeoutMs = 3000
-  int requestTimeoutMs = 3000
+  
+  
+  /**
+   * How long may a request take. Consider uploading large files too!
+   * 0 means indefinite, -1 means none (system default).
+   */
+  int requestTimeoutMs = -1
+  
 
 }
+
+

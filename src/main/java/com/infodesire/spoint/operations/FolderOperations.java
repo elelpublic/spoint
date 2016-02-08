@@ -14,8 +14,6 @@ import com.infodesire.spoint.model.SPFolder;
 import com.infodesire.spoint.utils.FilePath;
 import com.infodesire.spoint.utils.SpointUtils;
 
-import groovy.json.JsonOutput;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
@@ -234,8 +232,7 @@ public class FolderOperations extends OperationsBase {
    * @param connection Sharepoint server connection
    * @param relativeSiteUri Relative uri of site
    * @param folderPath Relative path of folder
-   * @param fileName
-   * @return Lists found
+   * @param fileName Name of file
    * @throws SPException on system error or configuration problem
    * 
    */
@@ -330,6 +327,80 @@ public class FolderOperations extends OperationsBase {
   }
 
 
+  /**
+   * Get versions of a file
+   * 
+   * @param connection Sharepoint server connection
+   * @param relativeSiteUri Relative uri of site
+   * @param folderPath Relative path of folder
+   * @param fileName Name of file
+   * @param id File version id
+   * @return Files found
+   * @throws SPException on system error or configuration problem
+   * 
+   */
+  public static SPFileVersion getFileVersion( Connection connection,
+    String relativeSiteUri, String folderPath, String fileName, int id ) throws SPException {
+    
+    FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
+    String request = "GetFileByServerRelativeUrl('/"
+      + enc( filePath.toString() ) + "')/Versions(" + id + ")";
+    
+    Response response = performGet( connection, relativeSiteUri, request );
+    return Json.parseFileVersion( response.getContent() );
+    
+  }
+  
+  
+  /**
+   * Get file version content
+   * 
+   * @param connection Sharepoint server connection
+   * @param relativeSiteUri Relative uri of site
+   * @param folderPath Relative path of folder
+   * @param fileName Name of file
+   * @param id File version id
+   * @param target Output stream for file content
+   * @throws SPException on system error or configuration problem
+   * 
+   */
+  public static void getFileVersionContent( Connection connection,
+    String relativeSiteUri, String folderPath, String fileName, int id,
+    OutputStream target ) throws SPException {
+    
+    FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
+    String request = id + "/" + encElements( filePath ).toString();
+    relativeSiteUri = "/_vti_history";
+    performGetRaw( connection, relativeSiteUri, request, target );
+    
+  }
+  
+  
+  /**
+   * Delete file version
+   * 
+   * @param connection Sharepoint server connection
+   * @param relativeSiteUri Relative uri of site
+   * @param folderPath Relative path of folder
+   * @param fileName Name of file
+   * @param id Id of file version
+   * @throws SPException on system error or configuration problem
+   * 
+   */
+  public static void deleteFileVersion( Connection connection,
+    String relativeSiteUri, String folderPath, String fileName, int id ) throws SPException {
+    
+    String formDigestValue = SiteOperations.ensureValidDigest( connection );
+    FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
+    String request = "GetFileByServerRelativeUrl('" + enc( filePath.toString() )
+      + "')/Versions/DeleteById(vid=" + id + ")";
+    
+    performPost( connection, relativeSiteUri, request, null, null,
+      formDigestValue, null );
+    
+  }
+
+  
 }
 
 

@@ -4,6 +4,7 @@
 package com.infodesire.spoint.base;
 
 import com.google.common.io.ByteStreams;
+import com.infodesire.spoint.utils.SpointUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -114,7 +115,7 @@ public class LowLevel {
       HttpEntity entity = httpResponse.getEntity();
       data = entity.getContent();
       
-      if( target != null ) {
+      if( target != null && SpointUtils.isHttpOk( response.getStatusCode() ) ) {
         ByteStreams.copy( data, target );
       }
       else {

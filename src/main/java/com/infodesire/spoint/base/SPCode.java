@@ -15,7 +15,9 @@ public enum SPCode {
   
   HTTP_ERROR( "Error in HTTP communication with server" ),
 
-  JSON_ERROR( "Error parsing JSON reply from server" )
+  JSON_ERROR( "Error parsing JSON reply from server" ),
+  
+  NOT_FOUND( "The request object was not found" )
 
   ;
   

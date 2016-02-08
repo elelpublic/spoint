@@ -6,6 +6,7 @@ package com.infodesire.spoint.utils;
 import com.google.common.base.Joiner;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -13,7 +14,7 @@ import java.util.List;
  * A normalized unixlike file path.
  *
  */
-public class FilePath implements Comparable<FilePath> {
+public class FilePath implements Comparable<FilePath>, Iterable<String> {
   
   
   private List<String> elements = new ArrayList<String>();
@@ -210,6 +211,12 @@ public class FilePath implements Comparable<FilePath> {
    */
   public String getLast() {
     return elements.get( elements.size() - 1 );
+  }
+
+
+  @Override
+  public Iterator<String> iterator() {
+    return elements.iterator();
   }
   
   

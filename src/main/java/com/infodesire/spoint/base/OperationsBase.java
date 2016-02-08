@@ -11,6 +11,8 @@ import com.infodesire.spoint.utils.SpointUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
 
@@ -40,7 +42,7 @@ public class OperationsBase {
     try {
       
       Response response = LowLevel.performGet( connection, path.toString(), null );
-      if( !response.isOk() ) {
+      if( !SpointUtils.isHttpOk( response.getStatusCode() ) ) {
         throw new SPException( HTTP_ERROR, response, null, null );
       }
       
@@ -74,7 +76,10 @@ public class OperationsBase {
     
     try {
       
-      LowLevel.performGet( connection, path.toString(), target );
+      Response response = LowLevel.performGet( connection, path.toString(), target );
+      if( !SpointUtils.isHttpOk( response.getStatusCode() ) ) {
+        throw new SPException( HTTP_ERROR, response, null, response.getContent() );
+      }
       
     }
     catch( ClientProtocolException ex ) {
@@ -113,7 +118,7 @@ public class OperationsBase {
       
       Response response = LowLevel.performPost( connection, path.toString(),
         contentAsString, contentAsStream, formDigestValue, xHttpMethod );
-      if( !response.isOk() ) {
+      if( !SpointUtils.isHttpOk( response.getStatusCode() ) ) {
         throw new SPException( HTTP_ERROR, response, null, null );
       }
       
@@ -140,5 +145,22 @@ public class OperationsBase {
   }
   
 
+  /**
+   * Encode each element of a file path
+   * 
+   * @param parameter Parameter to be used in a url
+   * @return URL encoded parameter
+   * 
+   */
+  public static FilePath encElements( FilePath path ) {
+    boolean relative = path.isRelative();
+    List<String> elements = new ArrayList<String>();
+    for( String element : path ) {
+      elements.add( enc( element ) );
+    }
+    return new FilePath( relative, elements );
+  }
+  
+  
 }
 

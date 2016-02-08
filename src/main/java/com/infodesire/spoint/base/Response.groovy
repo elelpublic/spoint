@@ -19,11 +19,6 @@ public class Response {
   int statusCode
   String content
 
-
-  public boolean isOk() {
-    return statusCode >= 200 && statusCode <= 200;
-  }
-
   public String toShortString() {
     return ( statusLine == null ? "" : statusLine.toString() ) //
       + ( content == null ? "" : " " //

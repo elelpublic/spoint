@@ -28,6 +28,18 @@ public class SpointUtils {
       throw new RuntimeException( ex );
     }
   }
+
+  
+  /**
+   * Anything considered OK in the HTTP protocol
+   * 
+   * @param statusCode HTTP status code
+   * @return Is the code considered 'OK'
+   * 
+   */
+  public static boolean isHttpOk( int statusCode ) {
+    return statusCode >= 200 && statusCode <= 200;
+  }
   
 
 }
