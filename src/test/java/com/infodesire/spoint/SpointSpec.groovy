@@ -3,7 +3,6 @@
 
 package com.infodesire.spoint;
 
-import com.apple.laf.AquaFileChooserUI.NewFolderAction;
 import com.google.common.base.Charsets
 import com.google.common.base.Strings
 import com.google.common.io.Files
@@ -11,19 +10,14 @@ import com.infodesire.spoint.base.Config
 import com.infodesire.spoint.base.Connection
 import com.infodesire.spoint.base.LowLevel
 import com.infodesire.spoint.base.Response
-import com.infodesire.spoint.base.SPNotFoundException;
-import com.infodesire.spoint.model.SPContextInfo
+import com.infodesire.spoint.base.SPNotFoundException
 import com.infodesire.spoint.model.SPFileVersion
 import com.infodesire.spoint.model.SPFolder
-import com.infodesire.spoint.model.SPList
-import com.infodesire.spoint.model.SPListItem
-import com.infodesire.spoint.operations.CheckinType
+import com.infodesire.spoint.operations.FileOperations;
 import com.infodesire.spoint.operations.FolderOperations
-import com.infodesire.spoint.operations.ListOperations
-import com.infodesire.spoint.operations.SiteOperations
 
-import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import groovy.transform.CompileStatic
 import spock.lang.Specification
 
 
@@ -324,14 +318,14 @@ public class SpointSpec extends Specification {
       Connection connection = getConnection()
       ensureTestFolderExists( connection )
       FileInputStream fin
-      FolderOperations.deleteFile( connection, testFolder, "hello.txt" )
+      FileOperations.deleteFile( connection, testFolder, "hello.txt" )
       
     when: "create file"
     
       File file = createTempFile( "hello.txt", "Hello World!" );
       fin = new FileInputStream( file );
       
-      FolderOperations.uploadFile( connection, testFolder, file.getName(), fin );
+      FileOperations.uploadFile( connection, testFolder, file.getName(), fin );
     
     then:
     
@@ -344,32 +338,46 @@ public class SpointSpec extends Specification {
       file.delete();
       file = createTempFile( "hello.txt", "Hello World 2!" );
       fin = new FileInputStream( file );
-      FolderOperations.uploadFile( connection, testFolder, file.getName(), fin );
+      FileOperations.uploadFile( connection, testFolder, file.getName(), fin );
       
       file.delete();
       file = createTempFile( "hello.txt", "Hello World 3!" );
       fin = new FileInputStream( file );
-      FolderOperations.uploadFile( connection, testFolder, file.getName(), fin );
+      FileOperations.uploadFile( connection, testFolder, file.getName(), fin );
       
       file.delete();
       file = createTempFile( "hello.txt", "Hello World 4!" );
       fin = new FileInputStream( file );
-      FolderOperations.uploadFile( connection, testFolder, file.getName(), fin );
+      FileOperations.uploadFile( connection, testFolder, file.getName(), fin );
       
-      List<SPFileVersion> versions = FolderOperations.getFileVersions( connection, testFolder, file.getName() )
+      List<SPFileVersion> versions = FileOperations.getFileVersions( connection, testFolder, file.getName() )
       
     then:
     
       // because the current version will not be listed here!
       versions.size() == 3
     
-      "Hello World!" == FolderOperations.getFileVersionContent( connection, testFolder, file.getName(), versions.get( 0 ).id )
-      "Hello World 2!" == FolderOperations.getFileVersionContent( connection, testFolder, file.getName(), versions.get( 1 ).id )
-      "Hello World 3!" == FolderOperations.getFileVersionContent( connection, testFolder, file.getName(), versions.get( 2 ).id )
+      "Hello World!" == FileOperations.getFileVersionContent( connection, testFolder, file.getName(), versions.get( 0 ).id )
+      "Hello World 2!" == FileOperations.getFileVersionContent( connection, testFolder, file.getName(), versions.get( 1 ).id )
+      "Hello World 3!" == FileOperations.getFileVersionContent( connection, testFolder, file.getName(), versions.get( 2 ).id )
       
       // current version:
-      "Hello World 4!" == FolderOperations.getFileContent( connection, testFolder, file.getName() );
+      "Hello World 4!" == FileOperations.getFileContent( connection, testFolder, file.getName() );
       
+//     when: "delete file version"
+//     
+//       FileOperations.deleteFileVersion( connection, testFolder, file.getName(), versions.get( 1 ).id )
+//     
+//       versions = FileOperations.getFileVersions( connection, testFolder, file.getName() )
+//       
+//     then:
+//     
+//       versions.size() == 2
+//     
+//       "Hello World!" == FileOperations.getFileVersionContent( connection, testFolder, file.getName(), versions.get( 0 ).id )
+//       "Hello World 3!" == FileOperations.getFileVersionContent( connection, testFolder, file.getName(), versions.get( 2 ).id )
+//       "Hello World 4!" == FileOperations.getFileContent( connection, testFolder, file.getName() );
+ 
   }
   
   
