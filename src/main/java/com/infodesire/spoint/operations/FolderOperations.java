@@ -6,7 +6,7 @@ package com.infodesire.spoint.operations;
 import com.infodesire.spoint.base.Connection;
 import com.infodesire.spoint.base.OperationsBase;
 import com.infodesire.spoint.base.Response;
-import com.infodesire.spoint.base.SPException;
+import com.infodesire.spoint.base.SpointException;
 import com.infodesire.spoint.model.Json;
 import com.infodesire.spoint.model.SPFile;
 import com.infodesire.spoint.model.SPFolder;
@@ -28,11 +28,11 @@ public class FolderOperations extends OperationsBase {
    * 
    * @param connection Sharepoint server connection
    * @return Lists found
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static List<SPFolder> getRootFolders( Connection connection )
-    throws SPException {
+    throws SpointException {
     return getFolders( connection, null );
   }
 
@@ -43,11 +43,11 @@ public class FolderOperations extends OperationsBase {
    * @param connection Sharepoint server connection
    * @param parentFolder Path of parent folder
    * @return Lists found
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static List<SPFolder> getFolders( Connection connection,
-    String parentFolder ) throws SPException {
+    String parentFolder ) throws SpointException {
 
     String request = "folders";
     if( parentFolder != null ) {
@@ -68,11 +68,11 @@ public class FolderOperations extends OperationsBase {
    * @param connection Sharepoint server connection
    * @param folderPath Relative path of folder
    * @return Lists found
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static SPFolder getFolder( Connection connection, String folderPath )
-    throws SPException {
+    throws SpointException {
 
     String request = "getfolderbyserverrelativeurl('" + enc( folderPath )
       + "')";
@@ -90,11 +90,11 @@ public class FolderOperations extends OperationsBase {
    * @param connection Sharepoint server connection
    * @param folderPath Relative path of new folder
    * @return Lists found
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static SPFolder createFolder( Connection connection, String folderPath )
-    throws SPException {
+    throws SpointException {
 
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
     String request = "folders/add('" + enc( folderPath ) + "')";
@@ -113,11 +113,11 @@ public class FolderOperations extends OperationsBase {
    * @param connection Sharepoint server connection
    * @param folderPath Relative path of folder
    * @return Lists found
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static void deleteFolder( Connection connection, String folderPath )
-    throws SPException {
+    throws SpointException {
 
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
     String request = "GetFolderByServerRelativeUrl('/" + enc( folderPath )
@@ -138,11 +138,11 @@ public class FolderOperations extends OperationsBase {
    * @param newName New name of folder
    * @return
    * @return Lists found
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static void renameFolder( Connection connection,
-    String folderPath, String newName ) throws SPException {
+    String folderPath, String newName ) throws SpointException {
 
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
     String request = "GetFolderByServerRelativeUrl('/"
@@ -162,11 +162,11 @@ public class FolderOperations extends OperationsBase {
    * @param connection Sharepoint server connection
    * @param folderPath Relative path of folder
    * @return Files found
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static List<SPFile> getFiles( Connection connection, String folderPath )
-    throws SPException {
+    throws SpointException {
 
     String request = "GetFolderByServerRelativeUrl('/" + enc( folderPath )
       + "')/Files";

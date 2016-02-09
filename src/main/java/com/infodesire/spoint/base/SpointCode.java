@@ -8,7 +8,7 @@ package com.infodesire.spoint.base;
  * Sharepoint interface status codes
  *
  */
-public enum SPCode {
+public enum SpointCode {
   
   
   OK( "Operation was performed successfully" ),
@@ -24,7 +24,7 @@ public enum SPCode {
   
   private String description;
 
-  private SPCode( String description ) {
+  private SpointCode( String description ) {
     this.description = description;
   }
   

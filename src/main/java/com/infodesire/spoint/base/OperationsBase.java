@@ -3,9 +3,12 @@
 
 package com.infodesire.spoint.base;
 
-import static com.infodesire.spoint.base.SPCode.*;
+import static com.infodesire.spoint.base.SpointCode.HTTP_ERROR;
 
 import com.google.common.base.Strings;
+import com.infodesire.spoint.model.Json;
+import com.infodesire.spoint.model.SPCodes;
+import com.infodesire.spoint.model.SPException;
 import com.infodesire.spoint.utils.FilePath;
 import com.infodesire.spoint.utils.SpointUtils;
 
@@ -23,8 +26,8 @@ import org.apache.http.client.ClientProtocolException;
  *
  */
 public class OperationsBase {
-  
-  
+
+
   /** Standard URI for API calls */
   public static final String API = "/_api/web/";
 
@@ -40,30 +43,32 @@ public class OperationsBase {
    * @param requestString Request string
    * @param entityDescription Describes the entity (usefull for logging and error messages)
    * @return Response from server
-   * @throws SPException when any kind of problem occured. Exception contains details.
+   * @throws SpointException when any kind of problem occured. Exception contains details.
    */
   public static Response performGet( Connection connection,
-    String requestString, String entityDescription ) throws SPException {
+    String requestString, String entityDescription ) throws SpointException {
 
     FilePath path = new FilePath( true );
     if( !Strings.isNullOrEmpty( connection.getSite() ) ) {
       path = FilePath.parse( connection.getSite() );
-    } 
-      
+    }
+
     path = new FilePath( path, requestString );
 
     try {
-      
-      Response response = LowLevel.performGet( connection, path.toString(), null );
+
+      Response response = LowLevel.performGet( connection, path.toString(),
+        null );
       handleHttpProblems( response, entityDescription );
       return response;
-      
+
     }
     catch( ClientProtocolException ex ) {
-      throw new SPException( HTTP_ERROR, null, ex, "Client protocol error" );
+      throw new SpointException( HTTP_ERROR, null, ex, "Client protocol error" );
     }
     catch( IOException ex ) {
-      throw new SPException( HTTP_ERROR, null, ex, "Cannot read response text" );
+      throw new SpointException( HTTP_ERROR, null, ex,
+        "Cannot read response text" );
     }
 
   }
@@ -76,35 +81,38 @@ public class OperationsBase {
    * @param requestString Request string
    * @param target Output stream for reply data
    * @param entityDescription Describes the entity (usefull for logging and error messages)
-   * @throws SPException when any kind of problem occured. Exception contains details.
+   * @throws SpointException when any kind of problem occured. Exception contains details.
    * 
    */
   public static void performGetRaw( Connection connection,
-    String requestString, OutputStream target, String entityDescription ) throws SPException {
-    
+    String requestString, OutputStream target, String entityDescription )
+    throws SpointException {
+
     FilePath path = new FilePath( true );
     if( !Strings.isNullOrEmpty( connection.getSite() ) ) {
       path = FilePath.parse( connection.getSite() );
     }
-    
+
     path = new FilePath( path, requestString );
-    
+
     try {
-      
-      Response response = LowLevel.performGet( connection, path.toString(), target );
+
+      Response response = LowLevel.performGet( connection, path.toString(),
+        target );
       handleHttpProblems( response, entityDescription );
-      
+
     }
     catch( ClientProtocolException ex ) {
-      throw new SPException( HTTP_ERROR, null, ex, "Client protocol error" );
+      throw new SpointException( HTTP_ERROR, null, ex, "Client protocol error" );
     }
     catch( IOException ex ) {
-      throw new SPException( HTTP_ERROR, null, ex, "Cannot read response text" );
+      throw new SpointException( HTTP_ERROR, null, ex,
+        "Cannot read response text" );
     }
-    
+
   }
-  
-  
+
+
   /**
    * Perform REST POST request to sharepoint, handle problems and return response
    * 
@@ -112,43 +120,45 @@ public class OperationsBase {
    * @param requestString Request string
    * @param contentAsString Request body as string
    * @param contentAsStream Request body as stream
-   * @param formDigestValue Auth value necessary for all writing operations. Can be retrieved via SiteOperations.getContextInfo. 
+   * @param formDigestValue Auth value necessary for all writing operations. Can be retrieved via SiteOperations.getContextInfo.
    * @param xHttpMethod Header value for X-HTTP-Method
    * @param entityDescription Describes the entity (usefull for logging and error messages)
    * @return Response from server
-   * @throws SPException when any kind of problem occured. Exception contains details.
+   * @throws SpointException when any kind of problem occured. Exception contains details.
    * 
    */
   public static Response performPost( Connection connection,
     String requestString, String contentAsString, InputStream contentAsStream,
-    String formDigestValue, String xHttpMethod, String entityDescription ) throws SPException {
-    
+    String formDigestValue, String xHttpMethod, String entityDescription )
+    throws SpointException {
+
     FilePath path = new FilePath( true );
     if( !Strings.isNullOrEmpty( connection.getSite() ) ) {
       path = FilePath.parse( connection.getSite() );
     }
-    
+
     path = new FilePath( path, requestString );
-    
+
     try {
-      
+
       Response response = LowLevel.performPost( connection, path.toString(),
         contentAsString, contentAsStream, formDigestValue, xHttpMethod );
       handleHttpProblems( response, entityDescription );
-      
+
       return response;
-      
+
     }
     catch( ClientProtocolException ex ) {
-      throw new SPException( HTTP_ERROR, null, ex, "Client protocol error" );
+      throw new SpointException( HTTP_ERROR, null, ex, "Client protocol error" );
     }
     catch( IOException ex ) {
-      throw new SPException( HTTP_ERROR, null, ex, "Cannot read response text" );
+      throw new SpointException( HTTP_ERROR, null, ex,
+        "Cannot read response text" );
     }
-    
+
   }
-  
-  
+
+
   /**
    * @param parameter Parameter to be used in a url
    * @return URL encoded parameter
@@ -157,7 +167,7 @@ public class OperationsBase {
   public static String enc( String parameter ) {
     return SpointUtils.encodeForUrl( parameter );
   }
-  
+
 
   /**
    * Encode each element of a file path
@@ -174,33 +184,46 @@ public class OperationsBase {
     }
     return new FilePath( relative, elements );
   }
-  
-  
+
+
   /**
    * Do the http error checking
    * 
    * @param response Response from server
-   * @param entityDescription 
-   * @throws SPException If HTTP problems occur
-   * @throws SPNotFoundException If the requestst entity was not found
+   * @param entityDescription
+   * @throws SpointException If HTTP problems occur
+   * @throws SpointNotFoundException If the requestst entity was not found
    * 
    */
-  private static void handleHttpProblems( Response response, String entityDescription  ) throws SPException, SPNotFoundException {
+  private static void handleHttpProblems( Response response,
+    String entityDescription ) throws SpointException, SpointNotFoundException {
 
     int code = response.getStatusCode();
     if( !SpointUtils.isHttpOk( code ) ) {
       if( code == 404 ) {
-        throw new SPNotFoundException( response, entityDescription, null,
+        throw new SpointNotFoundException( response, entityDescription, null,
           response.getContent() );
       }
       else {
-        throw new SPException( HTTP_ERROR, response, null, entityDescription
-          + " " + response.getContent() );
+        String content = response.getContent();
+        SPException spException = null; 
+        try {
+          if( content != null ) {
+            spException = Json.parseException( content );
+          }
+        }
+        catch( Exception ex ) {}
+        if( spException != null && spException.getCode().equals(
+          "" + SPCodes.FILE_NOT_FOUND.getCodeNumber() ) ) {
+          throw new SpointNotFoundException( response, entityDescription,
+            null, response.getContent() );
+        }
+        throw new SpointException( HTTP_ERROR, response, null,
+          entityDescription + " " + response.getContent() );
       }
     }
-    
+
   }
 
 
 }
-

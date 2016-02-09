@@ -10,14 +10,14 @@ import com.infodesire.spoint.base.Config
 import com.infodesire.spoint.base.Connection
 import com.infodesire.spoint.base.LowLevel
 import com.infodesire.spoint.base.Response
-import com.infodesire.spoint.base.SPNotFoundException
+import com.infodesire.spoint.base.SpointNotFoundException
+import com.infodesire.spoint.model.SPFile
 import com.infodesire.spoint.model.SPFileVersion
 import com.infodesire.spoint.model.SPFolder
-import com.infodesire.spoint.operations.FileOperations;
+import com.infodesire.spoint.operations.FileOperations
 import com.infodesire.spoint.operations.FolderOperations
 
 import groovy.json.JsonSlurper
-import groovy.transform.CompileStatic
 import spock.lang.Specification
 
 
@@ -276,7 +276,7 @@ public class SpointSpec extends Specification {
         FolderOperations.getFolder( connection, newFolder ).name
         assert false : "Folder was not deleted"
       }
-      catch( SPNotFoundException ex ) {}
+      catch( SpointNotFoundException ex ) {}
       
       !FolderOperations.getFolders( connection, testFolder ).any { folder ->
         folder.name == "new2"
@@ -318,7 +318,11 @@ public class SpointSpec extends Specification {
       Connection connection = getConnection()
       ensureTestFolderExists( connection )
       FileInputStream fin
-      FileOperations.deleteFile( connection, testFolder, "hello.txt" )
+      
+      try {
+        FileOperations.deleteFile( connection, testFolder, "hello.txt" )
+      }
+      catch( SpointNotFoundException ex ) {}
       
     when: "create file"
     
@@ -364,20 +368,34 @@ public class SpointSpec extends Specification {
       // current version:
       "Hello World 4!" == FileOperations.getFileContent( connection, testFolder, file.getName() );
       
-//     when: "delete file version"
-//     
-//       FileOperations.deleteFileVersion( connection, testFolder, file.getName(), versions.get( 1 ).id )
-//     
-//       versions = FileOperations.getFileVersions( connection, testFolder, file.getName() )
-//       
-//     then:
-//     
-//       versions.size() == 2
-//     
-//       "Hello World!" == FileOperations.getFileVersionContent( connection, testFolder, file.getName(), versions.get( 0 ).id )
-//       "Hello World 3!" == FileOperations.getFileVersionContent( connection, testFolder, file.getName(), versions.get( 2 ).id )
-//       "Hello World 4!" == FileOperations.getFileContent( connection, testFolder, file.getName() );
- 
+     when: "delete file version"
+     
+       FileOperations.deleteFileVersion( connection, testFolder, file.getName(), versions.get( 1 ).id )
+     
+       versions = FileOperations.getFileVersions( connection, testFolder, file.getName() )
+       
+     then:
+     
+       versions.size() == 2
+     
+       "Hello World!" == FileOperations.getFileVersionContent( connection, testFolder, file.getName(), versions.get( 0 ).id )
+       "Hello World 3!" == FileOperations.getFileVersionContent( connection, testFolder, file.getName(), versions.get( 1 ).id )
+       "Hello World 4!" == FileOperations.getFileContent( connection, testFolder, file.getName() );
+       
+     when: "delete file"
+     
+       FileOperations.deleteFile( connection, testFolder, file.getName() );
+       
+       try {
+         FileOperations.getFile( connection, testFolder, file.getName() );
+         assert false : "File still exists, but should not"
+       }
+       catch( SpointNotFoundException ex ) {}
+       
+     then:
+     
+       true
+     
   }
   
   
@@ -434,7 +452,7 @@ password=password
 site=
 
 # public folder
-publicFolder=Freigegebene Dokumente
+publicFolder=/Freigegebene Dokumente
 
 # everything below is for tests only ---------------------------------------------------------------
 
@@ -443,7 +461,7 @@ siteTitle=Test
 
 # a folder where all the tests will be performed in (no data in this folder is safe)
 # (we use a space character in folder name, to test this feature)
-testFolder=Freigegebene Dokumente/play ground
+testFolder=/Freigegebene Dokumente/play ground
 --------------------------------------------------------------------------------------------
 '''
     
@@ -468,7 +486,7 @@ testFolder=Freigegebene Dokumente/play ground
     try {
       FolderOperations.getFolder( connection, testFolder )
     }
-    catch( SPNotFoundException ex ) {
+    catch( SpointNotFoundException ex ) {
       FolderOperations.createFolder( connection, testFolder )
       FolderOperations.getFolder( connection, testFolder )
     }

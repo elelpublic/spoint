@@ -6,8 +6,9 @@ package com.infodesire.spoint.operations;
 import com.infodesire.spoint.base.Connection;
 import com.infodesire.spoint.base.OperationsBase;
 import com.infodesire.spoint.base.Response;
-import com.infodesire.spoint.base.SPException;
+import com.infodesire.spoint.base.SpointException;
 import com.infodesire.spoint.model.Json;
+import com.infodesire.spoint.model.SPFile;
 import com.infodesire.spoint.model.SPFileVersion;
 import com.infodesire.spoint.utils.FilePath;
 
@@ -32,11 +33,11 @@ public class FileOperations extends OperationsBase {
    * @param folderPath Relative path of folder
    * @param fileName Name of file
    * @param target Output stream for file content
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static void getFileContent( Connection connection, String folderPath,
-    String fileName, OutputStream target ) throws SPException {
+    String fileName, OutputStream target ) throws SpointException {
 
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
     String request = "GetFileByServerRelativeUrl('/"
@@ -56,11 +57,11 @@ public class FileOperations extends OperationsBase {
    * @param folderPath Relative path of folder
    * @param fileName Name of file
    * @param target Output stream for file content
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static String getFileContent( Connection connection, String folderPath,
-    String fileName ) throws SPException {
+    String fileName ) throws SpointException {
 
     ByteArrayOutputStream bout = new ByteArrayOutputStream();
     getFileContent( connection, folderPath, fileName, bout );
@@ -81,11 +82,11 @@ public class FileOperations extends OperationsBase {
    * @param folderPath Relative path of folder
    * @param fileName Name of file
    * @param content Stream providing file content
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static void uploadFile( Connection connection, String folderPath,
-    String fileName, InputStream content ) throws SPException {
+    String fileName, InputStream content ) throws SpointException {
 
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
     String request = "GetFolderByServerRelativeUrl('/" + enc( folderPath )
@@ -104,11 +105,11 @@ public class FileOperations extends OperationsBase {
    * @param connection Sharepoint server connection
    * @param folderPath Relative path of folder
    * @param fileName Name of file
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static void deleteFile( Connection connection, String folderPath,
-    String fileName ) throws SPException {
+    String fileName ) throws SpointException {
 
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
@@ -129,11 +130,11 @@ public class FileOperations extends OperationsBase {
    * @param folderPath Relative path of folder
    * @param fileName Name of file
    * @return Lists found
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static void checkOutFile( Connection connection, String folderPath,
-    String fileName ) throws SPException {
+    String fileName ) throws SpointException {
 
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
@@ -155,12 +156,12 @@ public class FileOperations extends OperationsBase {
    * @param fileName Name of file
    * @param comment Check in comment
    * @return Lists found
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static void checkInFile( Connection connection, String folderPath,
     String fileName, String comment, CheckinType checkInType )
-    throws SPException {
+    throws SpointException {
 
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
@@ -182,11 +183,11 @@ public class FileOperations extends OperationsBase {
    * @param folderPath Relative path of folder
    * @param fileName Name of file
    * @return Files found
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static List<SPFileVersion> getFileVersions( Connection connection,
-    String folderPath, String fileName ) throws SPException {
+    String folderPath, String fileName ) throws SpointException {
 
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
     String request = "GetFileByServerRelativeUrl('/"
@@ -208,11 +209,11 @@ public class FileOperations extends OperationsBase {
    * @param fileName Name of file
    * @param id File version id
    * @return Files found
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static SPFileVersion getFileVersion( Connection connection,
-    String folderPath, String fileName, String id ) throws SPException {
+    String folderPath, String fileName, String id ) throws SpointException {
 
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
     String request = "GetFileByServerRelativeUrl('/"
@@ -234,12 +235,12 @@ public class FileOperations extends OperationsBase {
    * @param fileName Name of file
    * @param id File version id
    * @param target Output stream for file content
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static void getFileVersionContent( Connection connection,
     String folderPath, String fileName, String id, OutputStream target )
-    throws SPException {
+    throws SpointException {
 
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
     String request = id + "/" + encElements( filePath ).toString();
@@ -259,12 +260,12 @@ public class FileOperations extends OperationsBase {
    * @param fileName Name of file
    * @param id File version id
    * @param target Output stream for file content
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static String getFileVersionContent( Connection connection,
     String folderPath, String fileName, String id )
-      throws SPException {
+      throws SpointException {
     
     ByteArrayOutputStream bout = new ByteArrayOutputStream();
     getFileVersionContent( connection, folderPath, fileName, id, bout );
@@ -285,16 +286,17 @@ public class FileOperations extends OperationsBase {
    * @param folderPath Relative path of folder
    * @param fileName Name of file
    * @param id Id of file version
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static void deleteFileVersion( Connection connection,
-    String folderPath, String fileName, String id ) throws SPException {
+    String folderPath, String fileName, String id ) throws SpointException {
 
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
-    String request = "GetFileByServerRelativeUrl('" + enc( filePath.toString() )
-      + "')/Versions/DeleteById(vid=" + id + ")";
+    String request = "GetFileByServerRelativeUrl('"
+      + encElements( filePath ).toString() + "')/Versions/DeleteById(vid=" + id
+      + ")";
     String description = "Version " + id + " of file " + fileName
       + " in folder " + folderPath;
 
@@ -304,4 +306,46 @@ public class FileOperations extends OperationsBase {
   }
 
 
+  /**
+   * Get files in a folder
+   * 
+   * @param connection Sharepoint server connection
+   * @param folderPath Relative path of folder
+   * @return Files found
+   * @throws SpointException on system error or configuration problem
+   * 
+   */
+  public static List<SPFile> getFiles( Connection connection, String folderPath )
+    throws SpointException {
+    
+    return FolderOperations.getFiles( connection, folderPath );
+
+  }
+
+
+  /**
+   * Get file
+   * 
+   * @param connection Sharepoint server connection
+   * @param folderPath Relative path of folder
+   * @patam Name of file
+   * @return File information
+   * @throws SpointException on system error or configuration problem
+   * 
+   */
+  public static SPFile getFile( Connection connection, String folderPath, String fileName  )
+    throws SpointException {
+    
+    FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
+    String request = "GetFileByServerRelativeUrl('/"
+      + enc( filePath.toString() ) + "')";
+    String description = "File " + fileName + " in folder "
+      + folderPath;
+
+    Response response = performGet( connection, API + request, description );
+    return Json.parseFile( response.getContent() );
+    
+  }
+  
+  
 }

@@ -6,7 +6,7 @@ package com.infodesire.spoint.operations;
 import com.infodesire.spoint.base.Connection;
 import com.infodesire.spoint.base.OperationsBase;
 import com.infodesire.spoint.base.Response;
-import com.infodesire.spoint.base.SPException;
+import com.infodesire.spoint.base.SpointException;
 import com.infodesire.spoint.model.Json;
 import com.infodesire.spoint.model.SPList;
 import com.infodesire.spoint.model.SPListItem;
@@ -26,11 +26,11 @@ public class ListOperations extends OperationsBase {
    * 
    * @param connection Sharepoint server connection
    * @return Lists found
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static List<SPList> getLists( Connection connection )
-    throws SPException {
+    throws SpointException {
 
     String description = "All lists";
     Response response = performGet( connection, API + "lists", description );
@@ -45,11 +45,11 @@ public class ListOperations extends OperationsBase {
    * @param connection Sharepoint server connection
    * @param title List title
    * @return List
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static SPList getListByTitle( Connection connection, String title )
-    throws SPException {
+    throws SpointException {
 
     String description = "List with title " + title;
 
@@ -66,11 +66,11 @@ public class ListOperations extends OperationsBase {
    * @param connection Sharepoint server connection
    * @param id List id (GUID)
    * @return List
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static SPList getListById( Connection connection, String id )
-    throws SPException {
+    throws SpointException {
 
     String description = "List with id " + id;
 
@@ -87,11 +87,11 @@ public class ListOperations extends OperationsBase {
    * @param connection Sharepoint server connection
    * @param title List title
    * @return List
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
   public static List<SPListItem> getListItemsByTitle( Connection connection,
-    String title ) throws SPException {
+    String title ) throws SpointException {
 
     String description = "Items of list with title " + title;
 

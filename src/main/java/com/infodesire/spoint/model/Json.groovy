@@ -3,13 +3,13 @@
 
 package com.infodesire.spoint.model;
 
-import com.infodesire.spoint.base.SPCode
-import com.infodesire.spoint.base.SPException
+import com.infodesire.spoint.base.SpointCode
+import com.infodesire.spoint.base.SpointException
 
 import groovy.json.JsonException
 import groovy.json.JsonSlurper
 
-import java.text.DecimalFormat;
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
 
@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat
  */
 public class Json {
 
-  public static List<SPList> parseLists( String content ) throws SPException {
+  public static List<SPList> parseLists( String content ) throws SpointException {
     
     try {
       def json = new JsonSlurper().parseText( content );
@@ -28,7 +28,7 @@ public class Json {
       }
     }
     catch( JsonException ex ) {
-      throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
+      throw new SpointException( SpointCode.JSON_ERROR, null, ex, null ); 
     }
     
   }
@@ -42,7 +42,7 @@ public class Json {
       return createList( list );
     }
     catch( JsonException ex ) {
-      throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
+      throw new SpointException( SpointCode.JSON_ERROR, null, ex, null ); 
     }
     
   }
@@ -56,13 +56,13 @@ public class Json {
       }
     }
     catch( JsonException ex ) {
-      throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
+      throw new SpointException( SpointCode.JSON_ERROR, null, ex, null ); 
     }
     
   }
   
   
-  public static List<SPFolder> parseFolders( String content ) throws SPException {
+  public static List<SPFolder> parseFolders( String content ) throws SpointException {
     
     try {
       def json = new JsonSlurper().parseText( content );
@@ -71,13 +71,13 @@ public class Json {
       }
     }
     catch( JsonException ex ) {
-      throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
+      throw new SpointException( SpointCode.JSON_ERROR, null, ex, null ); 
     }
     
   }
   
   
-  public static SPFolder parseFolder( String content ) throws SPException {
+  public static SPFolder parseFolder( String content ) throws SpointException {
     
     try {
       def json = new JsonSlurper().parseText( content );
@@ -86,7 +86,7 @@ public class Json {
       return createFolder( folder );
     }
     catch( JsonException ex ) {
-      throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
+      throw new SpointException( SpointCode.JSON_ERROR, null, ex, null ); 
     }
     
   }
@@ -162,7 +162,7 @@ public class Json {
       return createContextInfo( info );
     }
     catch( JsonException ex ) {
-      throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
+      throw new SpointException( SpointCode.JSON_ERROR, null, ex, null ); 
     }
   }
   
@@ -176,12 +176,12 @@ public class Json {
       );
     }
     catch( JsonException ex ) {
-      throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
+      throw new SpointException( SpointCode.JSON_ERROR, null, ex, null ); 
     }
   }
 
   
-  public static List<SPFile> parseFiles( String content ) throws SPException {
+  public static List<SPFile> parseFiles( String content ) throws SpointException {
     
     try {
       def json = new JsonSlurper().parseText( content );
@@ -190,13 +190,27 @@ public class Json {
       }
     }
     catch( JsonException ex ) {
-      throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
+      throw new SpointException( SpointCode.JSON_ERROR, null, ex, null ); 
     }
     
   }
   
   
-  public static List<SPFileVersion> parseFileVersions( String content ) throws SPException {
+  public static SPFile parseFile( String content ) throws SpointException {
+    
+    try {
+      def json = new JsonSlurper().parseText( content );
+      def file = json['d']
+      return createFile( file );
+    }
+    catch( JsonException ex ) {
+      throw new SpointException( SpointCode.JSON_ERROR, null, ex, null ); 
+    }
+    
+  }
+  
+  
+  public static List<SPFileVersion> parseFileVersions( String content ) throws SpointException {
     
     try {
       def json = new JsonSlurper().parseText( content );
@@ -205,13 +219,13 @@ public class Json {
       }
     }
     catch( JsonException ex ) {
-      throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
+      throw new SpointException( SpointCode.JSON_ERROR, null, ex, null ); 
     }
     
   }
   
   
-  public static SPFileVersion parseFileVersion( String content ) throws SPException {
+  public static SPFileVersion parseFileVersion( String content ) throws SpointException {
     
     try {
       def json = new JsonSlurper().parseText( content );
@@ -220,7 +234,7 @@ public class Json {
       return createFileVersion( fileVersion );
     }
     catch( JsonException ex ) {
-      throw new SPException( SPCode.JSON_ERROR, null, ex, null ); 
+      throw new SpointException( SpointCode.JSON_ERROR, null, ex, null ); 
     }
     
   }
@@ -233,12 +247,38 @@ public class Json {
    * @throws SPException if no value SP object is in the data
    * 
    */
-  private static void checkFound( Object object ) throws SPException {
+  private static void checkFound( Object object ) throws SpointException {
     if( object['__metadata'] == null ) {
-      throw new SPException( SPCode.NOT_FOUND, null, null, null );
+      throw new SpointException( SpointCode.NOT_FOUND, null, null, null );
     }
   }
   
+  
+  public static SPException parseException( String content ) {
+    
+    try {
+      def json = new JsonSlurper().parseText( content );
+      def error = json['error'];
+      String codeLine = error['code'];
+      int sep = codeLine.indexOf( ',' );
+      String code = codeLine.substring( 0, sep ).trim();
+      String name = codeLine.substring( sep + 1 ).trim();
+      def messageObject = error['message'];
+      String lang = messageObject['lang'];
+      String message = messageObject['value'];
+      return new SPException(
+        code: code,
+        name: name,
+        lang: lang,
+        message: message
+      );
+    }
+    catch( JsonException ex ) {
+      throw new SpointException( SpointCode.JSON_ERROR, null, ex, null ); 
+    }
+    
+  }
+
   
 }
 

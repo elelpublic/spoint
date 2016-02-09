@@ -8,15 +8,15 @@ package com.infodesire.spoint.base;
  * Exception in Sharepoint interface
  *
  */
-public class SPException extends Exception {
+public class SpointException extends Exception {
   
   
   protected static final long serialVersionUID = 1093656393163389613L;
-  protected SPCode code;
+  protected SpointCode code;
   protected Response response;
   
 
-  public SPException( SPCode code, Response response, Throwable cause, String message ) {
+  public SpointException( SpointCode code, Response response, Throwable cause, String message ) {
     super( message, cause );
     this.code = code;
     this.response = response;
@@ -26,7 +26,7 @@ public class SPException extends Exception {
   /**
    * @return the code
    */
-  public SPCode getCode() {
+  public SpointCode getCode() {
     return code;
   }
   

@@ -8,7 +8,7 @@ package com.infodesire.spoint.base;
  * A requestet entity was not found on the server
  *
  */
-public class SPNotFoundException extends SPException {
+public class SpointNotFoundException extends SpointException {
   
   
   private static final long serialVersionUID = -2992288844512822313L;
@@ -17,8 +17,8 @@ public class SPNotFoundException extends SPException {
   private String what;
   
 
-  public SPNotFoundException( Response response, String what, Throwable cause, String message ) {
-    super( SPCode.NOT_FOUND, response, cause, message );
+  public SpointNotFoundException( Response response, String what, Throwable cause, String message ) {
+    super( SpointCode.NOT_FOUND, response, cause, message );
     this.what = what;
   }
 

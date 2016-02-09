@@ -6,7 +6,7 @@ package com.infodesire.spoint.operations;
 import com.infodesire.spoint.base.Connection;
 import com.infodesire.spoint.base.OperationsBase;
 import com.infodesire.spoint.base.Response;
-import com.infodesire.spoint.base.SPException;
+import com.infodesire.spoint.base.SpointException;
 import com.infodesire.spoint.model.Json;
 import com.infodesire.spoint.model.SPContextInfo;
 
@@ -24,10 +24,10 @@ public class SiteOperations extends OperationsBase {
    * 
    * @param connection Sharepoint server connection
    * @return Request digest value
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    * 
    */
-  public static SPContextInfo getContextInfo( Connection connection ) throws SPException {
+  public static SPContextInfo getContextInfo( Connection connection ) throws SpointException {
     
     Response response = performPost( connection, "/_api/contextinfo", "", null,
       null, "POST", "Context information" );
@@ -41,9 +41,9 @@ public class SiteOperations extends OperationsBase {
    * enough (10s) remaining lifetime.
    * 
    * @param connection Current 
-   * @throws SPException on system error or configuration problem
+   * @throws SpointException on system error or configuration problem
    */
-  public static String ensureValidDigest( Connection connection ) throws SPException {
+  public static String ensureValidDigest( Connection connection ) throws SpointException {
     
     SPContextInfo contextInfo = connection.getContextInfo();
     
