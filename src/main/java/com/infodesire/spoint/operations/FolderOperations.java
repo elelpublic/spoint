@@ -14,8 +14,10 @@ import com.infodesire.spoint.model.SPFolder;
 import com.infodesire.spoint.utils.FilePath;
 import com.infodesire.spoint.utils.SpointUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 
@@ -206,6 +208,31 @@ public class FolderOperations extends OperationsBase {
 
 
   /**
+   * Get file content as a string
+   * 
+   * @param connection Sharepoint server connection
+   * @param folderPath Relative path of folder
+   * @param fileName Name of file
+   * @param target Output stream for file content
+   * @throws SPException on system error or configuration problem
+   * 
+   */
+  public static String getFileContent( Connection connection, String folderPath,
+    String fileName ) throws SPException {
+
+    ByteArrayOutputStream bout = new ByteArrayOutputStream();
+    getFileContent( connection, folderPath, fileName, bout );
+    try {
+      return new String( bout.toByteArray(), "UTF-8" );
+    }
+    catch( UnsupportedEncodingException ex ) {
+      throw new RuntimeException( ex );
+    }
+    
+  }
+  
+  
+  /**
    * Upload file content
    * 
    * @param connection Sharepoint server connection
@@ -343,7 +370,7 @@ public class FolderOperations extends OperationsBase {
    * 
    */
   public static SPFileVersion getFileVersion( Connection connection,
-    String folderPath, String fileName, int id ) throws SPException {
+    String folderPath, String fileName, String id ) throws SPException {
 
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
     String request = "GetFileByServerRelativeUrl('/"
@@ -369,7 +396,7 @@ public class FolderOperations extends OperationsBase {
    * 
    */
   public static void getFileVersionContent( Connection connection,
-    String folderPath, String fileName, int id, OutputStream target )
+    String folderPath, String fileName, String id, OutputStream target )
     throws SPException {
 
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );
@@ -383,6 +410,33 @@ public class FolderOperations extends OperationsBase {
 
 
   /**
+   * Get file version content as string
+   * 
+   * @param connection Sharepoint server connection
+   * @param folderPath Relative path of folder
+   * @param fileName Name of file
+   * @param id File version id
+   * @param target Output stream for file content
+   * @throws SPException on system error or configuration problem
+   * 
+   */
+  public static String getFileVersionContent( Connection connection,
+    String folderPath, String fileName, String id )
+      throws SPException {
+    
+    ByteArrayOutputStream bout = new ByteArrayOutputStream();
+    getFileVersionContent( connection, folderPath, fileName, id, bout );
+    try {
+      return new String( bout.toByteArray(), "UTF-8" );
+    }
+    catch( UnsupportedEncodingException ex ) {
+      throw new RuntimeException( ex );
+    }
+    
+  }
+  
+  
+  /**
    * Delete file version
    * 
    * @param connection Sharepoint server connection
@@ -393,7 +447,7 @@ public class FolderOperations extends OperationsBase {
    * 
    */
   public static void deleteFileVersion( Connection connection,
-    String folderPath, String fileName, int id ) throws SPException {
+    String folderPath, String fileName, String id ) throws SPException {
 
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
     FilePath filePath = new FilePath( FilePath.parse( folderPath ), fileName );

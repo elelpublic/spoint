@@ -363,6 +363,13 @@ public class SpointSpec extends Specification {
       // because the current version will not be listed here!
       versions.size() == 3
     
+      "Hello World!" == FolderOperations.getFileVersionContent( connection, testFolder, file.getName(), versions.get( 0 ).id )
+      "Hello World 2!" == FolderOperations.getFileVersionContent( connection, testFolder, file.getName(), versions.get( 1 ).id )
+      "Hello World 3!" == FolderOperations.getFileVersionContent( connection, testFolder, file.getName(), versions.get( 2 ).id )
+      
+      // current version:
+      "Hello World 4!" == FolderOperations.getFileContent( connection, testFolder, file.getName() );
+      
   }
   
   
