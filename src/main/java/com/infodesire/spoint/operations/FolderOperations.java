@@ -144,18 +144,17 @@ public class FolderOperations extends OperationsBase {
    * @throws SPException on system error or configuration problem
    * 
    */
-  public static SPFolder renameFolder( Connection connection,
+  public static void renameFolder( Connection connection,
     String folderPath, String newName ) throws SPException {
 
     String formDigestValue = SiteOperations.ensureValidDigest( connection );
-    String request = "GetFolderByServerRelativeUrl('/" + enc( folderPath )
-      + "')";
-    String content = "{ 'Name': '" + newName + "' }";
+    String request = "GetFolderByServerRelativeUrl('/"
+      + encElements( FilePath.parse( folderPath ) ).toString() + "')";
+    String content = "{ \"__metadata\": { \"type\": \"SP.Folder\" }, \"Name\": \"" + newName + "\" }";
     String description = "Folder " + folderPath;
 
-    Response response = performPost( connection, API + request, content, null,
+    performPost( connection, API + request, content, null,
       formDigestValue, "MERGE", description );
-    return Json.parseFolder( response.getContent() );
 
   }
 

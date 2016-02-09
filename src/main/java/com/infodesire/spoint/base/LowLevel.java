@@ -180,6 +180,7 @@ public class LowLevel {
       requestObject.addHeader( "X-RequestDigest", formDigestValue );
     }
     requestObject.addHeader( "IF-MATCH", "*" );
+    requestObject.addHeader( "Content-Type", "application/json;odata=verbose" );
     
     CloseableHttpResponse httpResponse = null;
     Response response = new Response();
@@ -192,10 +193,12 @@ public class LowLevel {
       response.setStatusCode( response.getStatusLine().getStatusCode() );
 
       HttpEntity entity = httpResponse.getEntity();
-      InputStream data = entity.getContent();
-      String text = new String( ByteStreams.toByteArray( data ), "UTF-8" );
-      response.setContent( text );
-      data.close();
+      if( entity != null ) {
+        InputStream data = entity.getContent();
+        String text = new String( ByteStreams.toByteArray( data ), "UTF-8" );
+        response.setContent( text );
+        data.close();
+      }
 
     }
     finally {

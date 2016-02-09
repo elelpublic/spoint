@@ -38,7 +38,7 @@ public class SpointUtils {
    * 
    */
   public static boolean isHttpOk( int statusCode ) {
-    return statusCode >= 200 && statusCode <= 200;
+    return statusCode >= 200 && statusCode < 300;
   }
   
 
